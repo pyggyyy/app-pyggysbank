@@ -8,10 +8,11 @@ import { Component } from '@angular/core';
 export class TodoCreateComponent {
   //property
   newTodo = 'No Content';
+  enterredTodo = ''
 
-  
+
   //method
   onCreate() {
-    this.newTodo = 'New Todo Baby'
+    this.newTodo = this.enterredTodo;
   }
 }
