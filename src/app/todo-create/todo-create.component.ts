@@ -6,7 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./todo-create.component.css']
 })
 export class TodoCreateComponent {
+  //property
+  newTodo = 'No Content';
+
+  
+  //method
   onCreate() {
-    alert('Todo Added')
+    this.newTodo = 'New Todo Baby'
   }
 }
