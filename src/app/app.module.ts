@@ -12,12 +12,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppComponent } from './app.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { HeaderComponent } from './header/header.component';
+import { PostListComponent } from './post-list/post-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoCreateComponent,
-    HeaderComponent
+    HeaderComponent,
+    PostListComponent
   ],
   imports: [
     BrowserModule,
