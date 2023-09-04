@@ -1,4 +1,9 @@
-<textarea rows="6" [(ngModel)]="enterredTodo"></textarea>
+<mat-card>
+    <mat-form-field>
+        <textarea matInput rows="6" [(ngModel)]="enterredTodo"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onCreate()">Save Todo</button>
+</mat-card>
+
 <hr>
-<button (click)="onCreate()">Save Todo</button>
 <p>{{newTodo}}</p>
