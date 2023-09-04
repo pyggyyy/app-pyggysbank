@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {Subscription} from 'rxjs';
 
 import { Todo } from './../todo.model';
 
@@ -10,17 +11,26 @@ import { TodoService } from '../services/todos.service';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnDestroy {
 //Declare Variable
 /*todos = [
   {title: 'First Post', content:'First Post Content'},
   {title: 'Second Post', content:'Second Post Content'},
 ];*/
   todos: Todo[] = [];
+  private todosSub: Subscription
 
   constructor(public todosService: TodoService){};
 
   ngOnInit() {
     this.todos = this.todosService.getTodos();
+    this.todosSub = this.todosService.getTodoUpdateListener()
+    .subscribe((todos: Todo[]) => {
+      this.todos = todos;
+    });
+  }
+
+  ngOnDestroy() {
+    this.todosSub.unsubscribe();
   }
 }
