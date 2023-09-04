@@ -13,14 +13,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AppComponent } from './app.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { HeaderComponent } from './header/header.component';
-import { PostListComponent } from './post-list/post-list.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoCreateComponent,
     HeaderComponent,
-    PostListComponent
+    TodoListComponent
   ],
   imports: [
     BrowserModule,
