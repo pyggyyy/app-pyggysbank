@@ -8,11 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { AppComponent } from './app.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoCreateComponent
+    TodoCreateComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
