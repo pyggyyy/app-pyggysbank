@@ -10,7 +10,7 @@ import { TodoService } from '../services/todos.service';
   styleUrls: ['./todo-create.component.css']
 })
 export class TodoCreateComponent {
-  
+
   constructor(public todosService: TodoService){};
 
 
@@ -24,5 +24,6 @@ export class TodoCreateComponent {
       content: form.value.content
     }
     this.todosService.addTodo(todo.title,todo.content)
+    form.resetForm();
   }
 }

@@ -4,6 +4,10 @@
             {{ todo.title }}
         </mat-expansion-panel-header>
         <p>{{ todo.content }}</p>
+        <mat-action-row>
+            <button mat-button color="primary">Edit</button>
+            <button mat-button color="warm">Delete</button>
+        </mat-action-row>
     </mat-expansion-panel>
 </mat-accordion>
 <p class="info-text mat-body-1" *ngIf="todos.length == 0">No Todos Added Yet</p>
