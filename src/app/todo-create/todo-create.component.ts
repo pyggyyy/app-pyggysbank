@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Todo } from './../todo.model';
 
 @Component({
   selector: 'app-todo-create',
@@ -14,7 +15,7 @@ export class TodoCreateComponent {
 
   //method
   onCreate() {
-    const todo = {
+    const todo: Todo = {
       title: this.enterredTitle,
       content: this.enterredContent
     }

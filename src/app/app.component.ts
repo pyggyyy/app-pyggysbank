@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { Todo } from './todo.model'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app-pyggysbank';
-  storedTodos = [];
+  storedTodos: Todo[] = [];
 
   onTodoAdded(todo){
     this.storedTodos.push(todo)

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 
+import { Todo } from './../todo.model';
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -11,7 +13,7 @@ export class TodoListComponent {
   {title: 'First Post', content:'First Post Content'},
   {title: 'Second Post', content:'Second Post Content'},
 ];*/
-@Input() todos = [];
+@Input() todos: Todo[] = [];
 
 //Declare Methods
 }
