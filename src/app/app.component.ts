@@ -8,5 +8,5 @@ import { Todo } from './todo.model'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  title = 'app-pyggysbank';
 }

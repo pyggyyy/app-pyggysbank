@@ -10,11 +10,7 @@ import { TodoService } from '../services/todos.service';
   styleUrls: ['./todo-create.component.css']
 })
 export class TodoCreateComponent {
-  //property
-  enterredTitle = '';
-  enterredContent = '';
   
-
   constructor(public todosService: TodoService){};
 
 

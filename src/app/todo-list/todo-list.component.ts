@@ -12,11 +12,7 @@ import { TodoService } from '../services/todos.service';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-//Declare Variable
-/*todos = [
-  {title: 'First Post', content:'First Post Content'},
-  {title: 'Second Post', content:'Second Post Content'},
-];*/
+  //Declare Variable
   todos: Todo[] = [];
   private todosSub: Subscription
 
