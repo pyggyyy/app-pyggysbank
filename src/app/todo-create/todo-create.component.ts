@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-todo-create',
@@ -7,12 +7,17 @@ import { Component } from '@angular/core';
 })
 export class TodoCreateComponent {
   //property
-  newTodo = 'No Content';
-  enterredTodo = ''
+  enterredTitle = '';
+  enterredContent = '';
+  @Output() todoCreated = new EventEmitter();
 
 
   //method
   onCreate() {
-    this.newTodo = this.enterredTodo;
+    const todo = {
+      title: this.enterredTitle,
+      content: this.enterredContent
+    }
+    this.todoCreated.emit(todo);
   }
 }

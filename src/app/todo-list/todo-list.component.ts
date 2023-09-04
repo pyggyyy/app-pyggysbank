@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-todo-list',
@@ -11,7 +11,7 @@ export class TodoListComponent {
   {title: 'First Post', content:'First Post Content'},
   {title: 'Second Post', content:'Second Post Content'},
 ];*/
-todos = [];
+@Input() todos = [];
 
 //Declare Methods
 }

@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app-pyggysbank';
+  storedTodos = [];
+
+  onTodoAdded(todo){
+    this.storedTodos.push(todo)
+  }
 }
