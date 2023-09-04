@@ -8,10 +8,5 @@ import { Todo } from './todo.model'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app-pyggysbank';
-  storedTodos: Todo[] = [];
 
-  onTodoAdded(todo){
-    this.storedTodos.push(todo)
-  }
 }

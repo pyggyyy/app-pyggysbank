@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Todo } from './../todo.model';
 import { NgForm } from '@angular/forms';
+
+import { TodoService } from '../services/todos.service';
 
 @Component({
   selector: 'app-todo-create',
@@ -11,7 +13,9 @@ export class TodoCreateComponent {
   //property
   enterredTitle = '';
   enterredContent = '';
-  @Output() todoCreated = new EventEmitter<Todo>();
+  
+
+  constructor(public todosService: TodoService){};
 
 
   //method
@@ -23,6 +27,6 @@ export class TodoCreateComponent {
       title: form.value.title,
       content: form.value.content
     }
-    this.todoCreated.emit(todo);
+    this.todosService.addTodo(todo.title,todo.content)
   }
 }
