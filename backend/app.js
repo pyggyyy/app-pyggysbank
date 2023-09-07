@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(bodyParse.json());
+app.use(bodyParser.json());
 app.unsubscribe(bodyParser.urlencoded({extended:false}));
 
 app.use((req, res, next) => {
