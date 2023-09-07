@@ -19,7 +19,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   constructor(public todosService: TodoService){};
 
   ngOnInit() {
-    this.todos = this.todosService.getTodos();
+    this.todosService.getTodos();
     this.todosSub = this.todosService.getTodoUpdateListener()
     .subscribe((todos: Todo[]) => {
       this.todos = todos;
