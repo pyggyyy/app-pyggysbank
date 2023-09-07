@@ -14,7 +14,7 @@ export class TodoService {
     }
 
     getTodos() {
-        this.http.get<{message: string,todos:Todo[]}>('http://localhost:3000/api/posts')
+        this.http.get<{message: string,todos:Todo[]}>('http://localhost:3000/api/todos')
         .subscribe((todoData) => {
             this.todos = todoData.todos;
             this.todosUpdated.next([...this.todos]);
