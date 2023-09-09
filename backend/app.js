@@ -1,9 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
 
 const Todo = require('./models/todo');
 
 const app = express();
+
+//Get from Mongo Instance Connect Modal
+mongoose.connect("mongodb+srv://admin:AIuglc4HpcRO8mIp@pyggysbank.hjupg.mongodb.net/?retryWrites=true&w=majority")
+.then(() => {
+    console.log('Connected to DB');
+})
+.catch(() => {
+    console.log('Connection Failed');
+})
 
 app.use(bodyParser.json());
 app.unsubscribe(bodyParser.urlencoded({extended:false}));
