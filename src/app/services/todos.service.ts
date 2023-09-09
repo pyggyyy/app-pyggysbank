@@ -31,7 +31,11 @@ export class TodoService {
             title:title,
             content:content
         }
-        this.todos.push(todo);
-        this.todosUpdated.next([...this.todos])
+        this.http.post<{message:string}>('http://localhost:3000/api/todos',todo)
+        .subscribe(responseData => {
+            console.log(responseData.message);
+            this.todos.push(todo);
+            this.todosUpdated.next([...this.todos]);
+        });
     }
 }
