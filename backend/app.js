@@ -14,6 +14,7 @@ app.use((req, res, next) => {
 })
 
 app.post('/api/todos', (req,res,next) => {
+    //To be Replaced with Establishing DB Entry
     const todos = req.body;
     console.log(todos);
     res.status(201).json({
@@ -22,6 +23,7 @@ app.post('/api/todos', (req,res,next) => {
 })
 
 app.get('/api/todos',(req, res, next) => {
+    //To be Repolaced with Data from DB
     const todos = [
         {
             id:'asdf234',
