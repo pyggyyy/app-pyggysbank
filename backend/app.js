@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const Todo = require('./models/todo');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -15,7 +17,10 @@ app.use((req, res, next) => {
 
 app.post('/api/todos', (req,res,next) => {
     //To be Replaced with Establishing DB Entry
-    const todos = req.body;
+    const todos = new Todo({
+        title: req.body.title,
+        content: req.body.content
+    });
     console.log(todos);
     res.status(201).json({
         message: 'Post Added Succesfully'
