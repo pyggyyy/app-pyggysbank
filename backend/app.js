@@ -7,7 +7,7 @@ const Todo = require('./models/todo');
 const app = express();
 
 //Get from Mongo Instance Connect Modal
-mongoose.connect("mongodb+srv://admin:AIuglc4HpcRO8mIp@pyggysbank.hjupg.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://admin:AIuglc4HpcRO8mIp@pyggysbank.hjupg.mongodb.net/node-angular?retryWrites=true&w=majority")
 .then(() => {
     console.log('Connected to DB');
 })
@@ -27,11 +27,11 @@ app.use((req, res, next) => {
 
 app.post('/api/todos', (req,res,next) => {
     //To be Replaced with Establishing DB Entry
-    const todos = new Todo({
+    const todo = new Todo({
         title: req.body.title,
         content: req.body.content
     });
-    console.log(todos);
+    todo.save();
     res.status(201).json({
         message: 'Post Added Succesfully'
     });
