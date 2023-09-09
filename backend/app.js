@@ -7,7 +7,15 @@ const Todo = require('./models/todo');
 const app = express();
 
 //Get from Mongo Instance Connect Modal
-mongoose.connect("mongodb+srv://admin:AIuglc4HpcRO8mIp@pyggysbank.hjupg.mongodb.net/node-angular?retryWrites=true&w=majority")
+const fs = require('fs');
+
+// Read the content of the file synchronously (you can also use async methods)
+const credentialsFilePath = './credentials.txt';
+const credentials = fs.readFileSync(credentialsFilePath, 'utf8').trim();
+console.log(credentials);
+
+
+mongoose.connect(credentials)
 .then(() => {
     console.log('Connected to DB');
 })
