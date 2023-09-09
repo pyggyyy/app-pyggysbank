@@ -31,9 +31,11 @@ app.post('/api/todos', (req,res,next) => {
         title: req.body.title,
         content: req.body.content
     });
-    todo.save();
-    res.status(201).json({
-        message: 'Todo Added Succesfully'
+    todo.save().then(createdTodo => {
+        res.status(201).json({
+            message: 'Todo Added Succesfully',
+            todoId: createdTodo._id
+        });
     });
 })
 

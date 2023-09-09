@@ -41,9 +41,10 @@ export class TodoService {
             title:title,
             content:content
         }
-        this.http.post<{message:string}>('http://localhost:3000/api/todos',todo)
+        this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todo)
         .subscribe(responseData => {
-            console.log(responseData.message);
+            const id = responseData.todoId;
+            todo.id = id;
             this.todos.push(todo);
             this.todosUpdated.next([...this.todos]);
         });
@@ -52,7 +53,9 @@ export class TodoService {
     deleteTodo(todoId: string) {
         this.http.delete('http://localhost:3000/api/todos/'+todoId)
         .subscribe(() => {
-            console.log('deleted');
+            const updatedTodos = this.todos.filter(todo => todo.id !== todoId);
+            this.todos = updatedTodos;
+            this.todosUpdated.next([...this.todos]);
         });
     }
 }
