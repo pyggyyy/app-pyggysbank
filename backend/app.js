@@ -33,7 +33,7 @@ app.post('/api/todos', (req,res,next) => {
     });
     todo.save();
     res.status(201).json({
-        message: 'Post Added Succesfully'
+        message: 'Todo Added Succesfully'
     });
 })
 
@@ -46,5 +46,12 @@ app.get('/api/todos',(req, res, next) => {
         });
     })
 });
+
+app.delete('/api/todos/:id', (req,res,next) => {
+    Todo.deleteOne({_id:req.params.id}).then(result => {
+        console.log(result);
+        res.status(200).json({message: 'Todo Deleted'});
+    })
+})
 
 module.exports = app;

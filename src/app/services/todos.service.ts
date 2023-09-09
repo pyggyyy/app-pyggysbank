@@ -48,4 +48,11 @@ export class TodoService {
             this.todosUpdated.next([...this.todos]);
         });
     }
+
+    deleteTodo(todoId: string) {
+        this.http.delete('http://localhost:3000/api/todos/'+todoId)
+        .subscribe(() => {
+            console.log('deleted');
+        });
+    }
 }
