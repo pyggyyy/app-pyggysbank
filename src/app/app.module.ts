@@ -15,7 +15,8 @@ import { AppComponent } from './app.component';
 import { TodoCreateComponent } from './todo-create/todo-create.component';
 import { HeaderComponent } from './header/header.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
-import { TodoService } from './services/todos.service';
+import { AppRoutingModule } from './app-routing.module';
+//import { TodoService } from './services/todos.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { TodoService } from './services/todos.service';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -35,7 +37,7 @@ import { TodoService } from './services/todos.service';
     MatToolbarModule,
     MatExpansionModule
   ],
-  providers: [TodoService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
