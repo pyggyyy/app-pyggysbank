@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+credentials.txt
 
 # Node
 /node_modules

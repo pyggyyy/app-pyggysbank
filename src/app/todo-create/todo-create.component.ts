@@ -20,6 +20,7 @@ export class TodoCreateComponent {
       return;
     }
     const todo: Todo = {
+      id: null,
       title: form.value.title,
       content: form.value.content
     }
