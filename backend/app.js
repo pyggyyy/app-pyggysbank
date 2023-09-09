@@ -39,22 +39,12 @@ app.post('/api/todos', (req,res,next) => {
 
 app.get('/api/todos',(req, res, next) => {
     //To be Repolaced with Data from DB
-    const todos = [
-        {
-            id:'asdf234',
-            title:'First Todo',
-            content: 'coming from server'
-        },
-        {
-            id:'tyrej345',
-            title:'Second Todo',
-            content: 'coming from server again!'
-        }
-    ]
-    res.status(200).json({
-        message: 'Recieved Succesfully',
-        todos: todos
-    });
+    Todo.find().then(documents => {
+        res.status(200).json({
+            message: 'Recieved Succesfully',
+            todos: documents
+        });
+    })
 });
 
 module.exports = app;
