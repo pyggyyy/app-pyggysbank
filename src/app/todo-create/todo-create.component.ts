@@ -27,8 +27,8 @@ export class TodoCreateComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      'content': new FormControl(null, [Validators.required]),
-      'image': new FormControl(null, {validators:[Validators.required]})
+      'content': new FormControl(null, []),
+      'image': new FormControl(null, {validators:[]})
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
