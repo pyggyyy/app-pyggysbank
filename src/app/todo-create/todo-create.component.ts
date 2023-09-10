@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import { TodoService } from '../services/todos.service';
+import { mimeType } from './mimi-type.validator';
 
 @Component({
   selector: 'app-todo-create',
@@ -28,7 +29,7 @@ export class TodoCreateComponent implements OnInit {
     this.form = new FormGroup({
       'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
       'content': new FormControl(null, []),
-      'image': new FormControl(null, {validators:[]})
+      'image': new FormControl(null, {asyncValidators: [mimeType]})
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
