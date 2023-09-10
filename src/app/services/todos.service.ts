@@ -35,6 +35,10 @@ export class TodoService {
         return this.todosUpdated.asObservable()
     }
 
+    getTodo(id: string){
+        return this.http.get<{_id:string, title:string,content:string}>('http://localhost:3000/api/todos/'+ id);
+    }
+
     addTodo(title:string, content:string){
         const todo: Todo = {
             id:null,
@@ -46,6 +50,22 @@ export class TodoService {
             const id = responseData.todoId;
             todo.id = id;
             this.todos.push(todo);
+            this.todosUpdated.next([...this.todos]);
+        });
+    }
+
+    updateTodo(id: string, title: string, content: string){
+        const todo: Todo = {
+            id:id,
+            title: title,
+            content: content
+        };
+        this.http.put('http://localhost:3000/api/todos/'+ id, todo)
+        .subscribe(response => {
+            const updatedTodos = [...this.todos];
+            const oldTodoIndex = updatedTodos.findIndex(p => p.id === todo.id);
+            updatedTodos[oldTodoIndex] = todo;
+            this.todos = updatedTodos;
             this.todosUpdated.next([...this.todos]);
         });
     }

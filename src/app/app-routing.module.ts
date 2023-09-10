@@ -5,7 +5,8 @@ import { TodoCreateComponent } from "./todo-create/todo-create.component";
 
 const routes: Routes = [
     {path:'', component: TodoListComponent},
-    {path:'create',component:TodoCreateComponent}
+    {path:'create',component:TodoCreateComponent},
+    {path:'edit/:todoId',component:TodoCreateComponent},
 ]
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

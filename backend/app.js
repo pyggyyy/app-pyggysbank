@@ -12,7 +12,6 @@ const fs = require('fs');
 // Read the content of the file synchronously (you can also use async methods)
 const credentialsFilePath = './credentials.txt';
 const credentials = fs.readFileSync(credentialsFilePath, 'utf8').trim();
-console.log(credentials);
 
 
 mongoose.connect(credentials)
@@ -47,6 +46,20 @@ app.post('/api/todos', (req,res,next) => {
     });
 })
 
+app.put('/api/todos/:id', (req,res,next) => {
+    const todo = new Todo({
+        _id: req.body.id,
+        title:req.body.title,
+        content: req.body.content
+    })
+    Todo.updateOne({_id:req.params.id},todo).then(result => {
+        console.log(result);
+        res.status(200).json({
+            message: 'Update Succesful'
+        })
+    })
+})
+
 app.get('/api/todos',(req, res, next) => {
     //To be Repolaced with Data from DB
     Todo.find().then(documents => {
@@ -56,6 +69,18 @@ app.get('/api/todos',(req, res, next) => {
         });
     })
 });
+
+//Get 1 Todo
+app.get('/api/todos/:id',(req,res,next) => {
+    Todo.findById(req.params.id).then(todo => {
+        if(todo){
+            res.status(200).json(todo);
+        }
+        else{
+            res.status(404).json({message: 'Todo Not Found'});
+        }
+    })
+})
 
 app.delete('/api/todos/:id', (req,res,next) => {
     Todo.deleteOne({_id:req.params.id}).then(result => {

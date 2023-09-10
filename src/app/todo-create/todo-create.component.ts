@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Todo } from './../todo.model';
 import { NgForm } from '@angular/forms';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import { TodoService } from '../services/todos.service';
 
@@ -9,9 +10,33 @@ import { TodoService } from '../services/todos.service';
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.css']
 })
-export class TodoCreateComponent {
+export class TodoCreateComponent implements OnInit {
 
-  constructor(public todosService: TodoService){};
+  constructor(public todosService: TodoService, public route: ActivatedRoute){};
+
+  private mode = 'create';
+  private todoId: string;
+  todo: Todo;
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if(paramMap.has('todoId')){
+        this.mode = 'edit';
+        this.todoId = paramMap.get('todoId');
+        this.todosService.getTodo(this.todoId).subscribe(todoData => {
+          this.todo = {
+            id:todoData._id,
+            title:todoData.title,
+            content:todoData.content
+          }
+        })
+      }
+      else{
+        this.mode = 'create';
+        this.todoId = null;
+      }
+    });
+  }
 
 
   //method
@@ -19,12 +44,23 @@ export class TodoCreateComponent {
     if(form.invalid){
       return;
     }
-    const todo: Todo = {
-      id: null,
-      title: form.value.title,
-      content: form.value.content
+    if(this.mode === 'create'){
+      const todo: Todo = {
+        id: null,
+        title: form.value.title,
+        content: form.value.content
+      }
+      this.todosService.addTodo(todo.title,todo.content)
     }
-    this.todosService.addTodo(todo.title,todo.content)
+    else{
+      //Edit
+      const todo: Todo = {
+        id: this.todoId,
+        title: form.value.title,
+        content: form.value.content
+      }
+      this.todosService.updateTodo(todo.id,todo.title,todo.content);
+    }
     form.resetForm();
   }
 }

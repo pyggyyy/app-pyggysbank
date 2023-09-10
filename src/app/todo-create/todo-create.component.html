@@ -1,11 +1,11 @@
 <mat-card>
     <form (submit)="onCreate(todoForm)" #todoForm="ngForm">
         <mat-form-field>
-            <input placeholder="title" matInput type="text" name="title" ngModel required #title="ngModel">
+            <input placeholder="title" matInput type="text" name="title" [ngModel]="todo?.title" required #title="ngModel">
             <mat-error *ngIf="title.invalid">Please Enter Title</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <textarea placeholder="body" matInput rows="6" name="content" ngModel></textarea>
+            <textarea placeholder="body" matInput rows="6" name="content" [ngModel]="todo?.content"></textarea>
         </mat-form-field>
         <button mat-raised-button color="accent" type="submit">Save Todo</button>
     </form>
