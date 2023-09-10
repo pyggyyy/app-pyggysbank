@@ -8,3 +8,9 @@ mat-form-field{
 mat-spinner{
     margin: auto;
 }
+.img-upload-div{
+    margin-bottom:25px ;
+}
+.img-upload-div input[type="file"]{
+    visibility: hidden;
+}
