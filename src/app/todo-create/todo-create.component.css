@@ -14,3 +14,10 @@ mat-spinner{
 .img-upload-div input[type="file"]{
     visibility: hidden;
 }
+.img-preview{
+    height: 250px;
+    margin: 1rem 0;
+}
+.img-preview img{
+    height: 100%;
+}
