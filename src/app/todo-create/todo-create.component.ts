@@ -25,7 +25,8 @@ export class TodoCreateComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      'content': new FormControl(null, [Validators.required])
+      'content': new FormControl(null, [Validators.required]),
+      'image': new FormControl(null, {validators:[Validators.required]})
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
@@ -49,6 +50,14 @@ export class TodoCreateComponent implements OnInit {
     });
   }
 
+  //Image Upload Method
+  onImagePicked(event:Event){
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image:file});
+    this.form.get('image').updateValueAndValidity();
+    console.log(file);
+    console.log(this.form);
+  }
 
   //method
   onCreate() {
