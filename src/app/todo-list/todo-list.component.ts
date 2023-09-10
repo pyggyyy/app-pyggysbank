@@ -14,14 +14,17 @@ import { TodoService } from '../services/todos.service';
 export class TodoListComponent implements OnInit, OnDestroy {
   //Declare Variable
   todos: Todo[] = [];
+  isLoading = false;
   private todosSub: Subscription
 
   constructor(public todosService: TodoService){};
 
   ngOnInit() {
+    this.isLoading = true;
     this.todosService.getTodos();
     this.todosSub = this.todosService.getTodoUpdateListener()
     .subscribe((todos: Todo[]) => {
+      this.isLoading = false;
       this.todos = todos;
     });
   }

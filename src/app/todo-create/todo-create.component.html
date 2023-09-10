@@ -1,5 +1,6 @@
 <mat-card>
-    <form (submit)="onCreate(todoForm)" #todoForm="ngForm">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form (submit)="onCreate(todoForm)" #todoForm="ngForm" *ngIf="!isLoading">
         <mat-form-field>
             <input placeholder="title" matInput type="text" name="title" [ngModel]="todo?.title" required #title="ngModel">
             <mat-error *ngIf="title.invalid">Please Enter Title</mat-error>

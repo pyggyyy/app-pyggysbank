@@ -17,13 +17,16 @@ export class TodoCreateComponent implements OnInit {
   private mode = 'create';
   private todoId: string;
   todo: Todo;
+  isLoading = false;
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
         this.mode = 'edit';
         this.todoId = paramMap.get('todoId');
+        this.isLoading = true;
         this.todosService.getTodo(this.todoId).subscribe(todoData => {
+          this.isLoading = false;
           this.todo = {
             id:todoData._id,
             title:todoData.title,
@@ -44,6 +47,7 @@ export class TodoCreateComponent implements OnInit {
     if(form.invalid){
       return;
     }
+    this.isLoading = true;
     if(this.mode === 'create'){
       const todo: Todo = {
         id: null,
