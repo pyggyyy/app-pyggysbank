@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from './../todo.model';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import { TodoService } from '../services/todos.service';
@@ -12,14 +12,21 @@ import { TodoService } from '../services/todos.service';
 })
 export class TodoCreateComponent implements OnInit {
 
-  constructor(public todosService: TodoService, public route: ActivatedRoute){};
-
   private mode = 'create';
   private todoId: string;
   todo: Todo;
   isLoading = false;
 
+  //Define Form on TS
+  form: FormGroup;
+
+  constructor(public todosService: TodoService, public route: ActivatedRoute){};
+
   ngOnInit() {
+    this.form = new FormGroup({
+      'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      'content': new FormControl(null, [Validators.required])
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
         this.mode = 'edit';
@@ -32,6 +39,7 @@ export class TodoCreateComponent implements OnInit {
             title:todoData.title,
             content:todoData.content
           }
+          this.form.setValue({title:this.todo.title,content:this.todo.content})
         })
       }
       else{
@@ -43,16 +51,16 @@ export class TodoCreateComponent implements OnInit {
 
 
   //method
-  onCreate(form:NgForm) {
-    if(form.invalid){
+  onCreate() {
+    if(this.form.invalid){
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create'){
       const todo: Todo = {
         id: null,
-        title: form.value.title,
-        content: form.value.content
+        title: this.form.value.title,
+        content: this.form.value.content
       }
       this.todosService.addTodo(todo.title,todo.content)
     }
@@ -60,11 +68,11 @@ export class TodoCreateComponent implements OnInit {
       //Edit
       const todo: Todo = {
         id: this.todoId,
-        title: form.value.title,
-        content: form.value.content
+        title: this.form.value.title,
+        content: this.form.value.content
       }
       this.todosService.updateTodo(todo.id,todo.title,todo.content);
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
