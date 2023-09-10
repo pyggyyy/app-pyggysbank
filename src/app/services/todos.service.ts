@@ -4,13 +4,14 @@ import {Todo} from './../todo.model';
 import {HttpClient} from '@angular/common/http'
 import { Subject } from 'rxjs';
 import {map} from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class TodoService {
     private todos: Todo[] = [];
     private todosUpdated = new Subject<Todo[]>();
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private router: Router) {
 
     }
 
@@ -51,6 +52,7 @@ export class TodoService {
             todo.id = id;
             this.todos.push(todo);
             this.todosUpdated.next([...this.todos]);
+            this.router.navigate(['/']);
         });
     }
 
@@ -67,6 +69,7 @@ export class TodoService {
             updatedTodos[oldTodoIndex] = todo;
             this.todos = updatedTodos;
             this.todosUpdated.next([...this.todos]);
+            this.router.navigate(['/']);
         });
     }
 
