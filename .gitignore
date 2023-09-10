@@ -7,6 +7,8 @@
 /bazel-out
 credentials.txt
 
+/backend/images
+
 # Node
 /node_modules
 npm-debug.log

@@ -40,16 +40,18 @@ export class TodoService {
         return this.http.get<{_id:string, title:string,content:string}>('http://localhost:3000/api/todos/'+ id);
     }
 
-    addTodo(title:string, content:string){
-        const todo: Todo = {
-            id:null,
-            title:title,
-            content:content
-        }
-        this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todo)
+    addTodo(title:string, content:string, image: File){
+        const todoData = new FormData();
+        todoData.append('title', title);
+        todoData.append('content', content);
+        todoData.append('image', image, title);
+        this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todoData)
         .subscribe(responseData => {
-            const id = responseData.todoId;
-            todo.id = id;
+            const todo: Todo = {
+                id: responseData.todoId,
+                title: title,
+                content: content
+            }
             this.todos.push(todo);
             this.todosUpdated.next([...this.todos]);
             this.router.navigate(['/']);

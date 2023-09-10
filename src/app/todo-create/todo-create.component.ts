@@ -77,7 +77,7 @@ export class TodoCreateComponent implements OnInit {
         title: this.form.value.title,
         content: this.form.value.content
       }
-      this.todosService.addTodo(todo.title,todo.content)
+      this.todosService.addTodo(todo.title,todo.content,this.form.value.image)
     }
     else{
       //Edit
