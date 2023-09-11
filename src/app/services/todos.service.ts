@@ -43,8 +43,12 @@ export class TodoService {
     addTodo(title:string, content:string, image: File){
         const todoData = new FormData();
         todoData.append('title', title);
-        todoData.append('content', content);
-        todoData.append('image', image, title);
+        if(content){
+            todoData.append('content', content);
+        }
+        if(image){
+            todoData.append('image', image, title);
+        }
         this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todoData)
         .subscribe(responseData => {
             const todo: Todo = {
