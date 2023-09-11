@@ -48,12 +48,19 @@ router.post('', multer({storage: storage}).single('image') ,(req,res,next) => {
     });
 })
 
-router.put('/:id', (req,res,next) => {
+router.put('/:id', multer({storage: storage}).single('image'), (req,res,next) => {
+    let imagePath = req.body.imagePath;
+    if(req.file){
+        const url = req.protocol + '://' + req.get('host');
+        imagePath = url  + '/images/' + req.file.filename;
+    }
     const todo = new Todo({
         _id: req.body.id,
         title:req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        imagePath: imagePath
     })
+    console.log(todo);
     Todo.updateOne({_id:req.params.id},todo).then(result => {
         console.log(result);
         res.status(200).json({

@@ -38,7 +38,7 @@ export class TodoService {
     }
 
     getTodo(id: string){
-        return this.http.get<{_id:string, title:string,content:string}>('http://localhost:3000/api/todos/'+ id);
+        return this.http.get<{_id:string, title:string,content:string, imagePath: string}>('http://localhost:3000/api/todos/'+ id);
     }
 
     addTodo(title:string, content:string, image: File){
@@ -64,17 +64,33 @@ export class TodoService {
         });
     }
 
-    updateTodo(id: string, title: string, content: string){
-        const todo: Todo = {
-            id:id,
-            title: title,
-            content: content,
-            imagePath: null
-        };
-        this.http.put('http://localhost:3000/api/todos/'+ id, todo)
+    updateTodo(id: string, title: string, content: string, image: File | string){
+        let todoData: Todo | FormData;
+        if(typeof(image) === 'object'){
+            todoData = new FormData();
+            todoData.append('id',id);
+            todoData.append('title',title);
+            todoData.append('content',content);
+            todoData.append('image',image, title);
+        }
+        else{
+            todoData = {
+                id:id,
+                title: title,
+                content:content,
+                imagePath:image as string
+            }
+        }
+        this.http.put('http://localhost:3000/api/todos/'+ id, todoData)
         .subscribe(response => {
             const updatedTodos = [...this.todos];
-            const oldTodoIndex = updatedTodos.findIndex(p => p.id === todo.id);
+            const oldTodoIndex = updatedTodos.findIndex(p => p.id === id);
+            const todo: Todo = {
+                id:id,
+                title: title,
+                content:content,
+                imagePath:''
+            }
             updatedTodos[oldTodoIndex] = todo;
             this.todos = updatedTodos;
             this.todosUpdated.next([...this.todos]);

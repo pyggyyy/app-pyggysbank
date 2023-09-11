@@ -42,9 +42,9 @@ export class TodoCreateComponent implements OnInit {
             id:todoData._id,
             title:todoData.title,
             content:todoData.content,
-            imagePath: null
+            imagePath: todoData.imagePath
           }
-          this.form.setValue({title:this.todo.title,content:this.todo.content})
+          this.form.setValue({title:this.todo.title,content:this.todo.content,image:this.todo.imagePath})
         })
       }
       else{
@@ -87,9 +87,9 @@ export class TodoCreateComponent implements OnInit {
         id: this.todoId,
         title: this.form.value.title,
         content: this.form.value.content,
-        imagePath: null
+        imagePath: this.form.value.image
       }
-      this.todosService.updateTodo(todo.id,todo.title,todo.content);
+      this.todosService.updateTodo(todo.id,todo.title,todo.content,todo.imagePath);
     }
     this.form.reset();
   }
