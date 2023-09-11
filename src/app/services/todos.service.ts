@@ -22,7 +22,8 @@ export class TodoService {
                 return{
                     title: todo.title,
                     content: todo.content,
-                    id: todo._id
+                    id: todo._id,
+                    imagePath: todo.imagePath
                 }
             })
         }))
@@ -49,12 +50,13 @@ export class TodoService {
         if(image){
             todoData.append('image', image, title);
         }
-        this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todoData)
+        this.http.post<{message:string, todo: Todo}>('http://localhost:3000/api/todos',todoData)
         .subscribe(responseData => {
             const todo: Todo = {
-                id: responseData.todoId,
+                id: responseData.todo.id,
                 title: title,
-                content: content
+                content: content,
+                imagePath: responseData.todo.imagePath
             }
             this.todos.push(todo);
             this.todosUpdated.next([...this.todos]);
@@ -66,7 +68,8 @@ export class TodoService {
         const todo: Todo = {
             id:id,
             title: title,
-            content: content
+            content: content,
+            imagePath: null
         };
         this.http.put('http://localhost:3000/api/todos/'+ id, todo)
         .subscribe(response => {

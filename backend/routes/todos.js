@@ -28,15 +28,22 @@ const storage = multer.diskStorage({
 })
 
 router.post('', multer({storage: storage}).single('image') ,(req,res,next) => {
-    //To be Replaced with Establishing DB Entry
+    const url = req.protocol + '://' + req.get('host');
     const todo = new Todo({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        imagePath: null
     });
+    if(req.file){
+        todo.imagePath = url + '/images/' + req.file.filename;
+    }
     todo.save().then(createdTodo => {
         res.status(201).json({
             message: 'Todo Added Succesfully',
-            todoId: createdTodo._id
+            todo: {
+                ...createdTodo,
+                id: createdTodo._id,
+            }
         });
     });
 })

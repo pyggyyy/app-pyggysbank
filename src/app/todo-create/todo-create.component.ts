@@ -41,7 +41,8 @@ export class TodoCreateComponent implements OnInit {
           this.todo = {
             id:todoData._id,
             title:todoData.title,
-            content:todoData.content
+            content:todoData.content,
+            imagePath: null
           }
           this.form.setValue({title:this.todo.title,content:this.todo.content})
         })
@@ -75,7 +76,8 @@ export class TodoCreateComponent implements OnInit {
       const todo: Todo = {
         id: null,
         title: this.form.value.title,
-        content: this.form.value.content
+        content: this.form.value.content,
+        imagePath: null
       }
       this.todosService.addTodo(todo.title,todo.content,this.form.value.image)
     }
@@ -84,7 +86,8 @@ export class TodoCreateComponent implements OnInit {
       const todo: Todo = {
         id: this.todoId,
         title: this.form.value.title,
-        content: this.form.value.content
+        content: this.form.value.content,
+        imagePath: null
       }
       this.todosService.updateTodo(todo.id,todo.title,todo.content);
     }
