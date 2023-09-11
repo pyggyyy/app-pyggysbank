@@ -83,6 +83,7 @@ router.get('',(req, res, next) => {
 router.get('/:id',(req,res,next) => {
     Todo.findById(req.params.id).then(todo => {
         if(todo){
+            console.log(todo);
             res.status(200).json(todo);
         }
         else{
