@@ -70,8 +70,14 @@ router.put('/:id', multer({storage: storage}).single('image'), (req,res,next) =>
 })
 
 router.get('',(req, res, next) => {
-    //To be Repolaced with Data from DB
-    Todo.find().then(documents => {
+    const pageSize = +req.query.pagesize;
+    const currentPage = +req.query.page;
+    const todoQuery = Todo.find();
+    if(pageSize && currentPage){
+        todoQuery.skip(pageSize * (currentPage - 1))
+        .limit(pageSize);
+    }
+    todoQuery.then(documents => {
         res.status(200).json({
             message: 'Recieved Succesfully',
             todos: documents
