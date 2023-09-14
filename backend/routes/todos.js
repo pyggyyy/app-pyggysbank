@@ -73,15 +73,21 @@ router.get('',(req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
     const todoQuery = Todo.find();
+    let fetchedTodos;
     if(pageSize && currentPage){
         todoQuery.skip(pageSize * (currentPage - 1))
         .limit(pageSize);
     }
     todoQuery.then(documents => {
+        fetchedTodos = documents;
+        return Todo.count();
+    })
+    .then(count => {
         res.status(200).json({
-            message: 'Recieved Succesfully',
-            todos: documents
-        });
+            message:'Todos Fetched Succesfully!',
+            todos:fetchedTodos,
+            maxTodos: count
+        })
     })
 });
 

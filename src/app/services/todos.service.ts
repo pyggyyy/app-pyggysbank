@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Injectable({providedIn: 'root'})
 export class TodoService {
     private todos: Todo[] = [];
-    private todosUpdated = new Subject<Todo[]>();
+    private todosUpdated = new Subject<{todos: Todo[], todoCount: number}>();
 
     constructor(private http: HttpClient, private router: Router) {
 
@@ -17,20 +17,20 @@ export class TodoService {
 
     getTodos(todosPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
-        this.http.get<{message: string,todos:any}>('http://localhost:3000/api/todos' + queryParams)
+        this.http.get<{message: string,todos:any,maxTodos: number}>('http://localhost:3000/api/todos' + queryParams)
         .pipe(map((todoData) => {
-            return todoData.todos.map(todo => {
+            return {todos: todoData.todos.map(todo => {
                 return{
                     title: todo.title,
                     content: todo.content,
                     id: todo._id,
                     imagePath: todo.imagePath
                 }
-            })
+            }), maxTodos: todoData.maxTodos}
         }))
-        .subscribe((transformedTodos) => {
-            this.todos = transformedTodos;
-            this.todosUpdated.next([...this.todos]);
+        .subscribe((transformedTodosData) => {
+            this.todos = transformedTodosData.todos;
+            this.todosUpdated.next({todos: [...this.todos],todoCount:transformedTodosData.maxTodos});
         });
     }
 
@@ -53,14 +53,6 @@ export class TodoService {
         }
         this.http.post<{message:string, todo: Todo}>('http://localhost:3000/api/todos',todoData)
         .subscribe(responseData => {
-            const todo: Todo = {
-                id: responseData.todo.id,
-                title: title,
-                content: content,
-                imagePath: responseData.todo.imagePath
-            }
-            this.todos.push(todo);
-            this.todosUpdated.next([...this.todos]);
             this.router.navigate(['/']);
         });
     }
@@ -84,27 +76,12 @@ export class TodoService {
         }
         this.http.put('http://localhost:3000/api/todos/'+ id, todoData)
         .subscribe(response => {
-            const updatedTodos = [...this.todos];
-            const oldTodoIndex = updatedTodos.findIndex(p => p.id === id);
-            const todo: Todo = {
-                id:id,
-                title: title,
-                content:content,
-                imagePath:''
-            }
-            updatedTodos[oldTodoIndex] = todo;
-            this.todos = updatedTodos;
-            this.todosUpdated.next([...this.todos]);
             this.router.navigate(['/']);
         });
     }
 
     deleteTodo(todoId: string) {
-        this.http.delete('http://localhost:3000/api/todos/'+todoId)
-        .subscribe(() => {
-            const updatedTodos = this.todos.filter(todo => todo.id !== todoId);
-            this.todos = updatedTodos;
-            this.todosUpdated.next([...this.todos]);
-        });
+        return this.http.delete('http://localhost:3000/api/todos/'+todoId)
+        
     }
 }
