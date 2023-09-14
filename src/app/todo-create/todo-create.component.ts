@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from './../todo.model';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import { TodoService } from '../services/todos.service';
+import { mimeType } from './mimi-type.validator';
 
 @Component({
   selector: 'app-todo-create',
@@ -12,14 +13,24 @@ import { TodoService } from '../services/todos.service';
 })
 export class TodoCreateComponent implements OnInit {
 
-  constructor(public todosService: TodoService, public route: ActivatedRoute){};
-
   private mode = 'create';
   private todoId: string;
   todo: Todo;
   isLoading = false;
 
+  //Define Form on TS
+  form: FormGroup;
+
+  imagePreview: string;
+
+  constructor(public todosService: TodoService, public route: ActivatedRoute){};
+
   ngOnInit() {
+    this.form = new FormGroup({
+      'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      'content': new FormControl(null, []),
+      'image': new FormControl(null, {asyncValidators: [mimeType]})
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('todoId')){
         this.mode = 'edit';
@@ -30,8 +41,10 @@ export class TodoCreateComponent implements OnInit {
           this.todo = {
             id:todoData._id,
             title:todoData.title,
-            content:todoData.content
+            content:todoData.content,
+            imagePath: todoData.imagePath
           }
+          this.form.setValue({title:this.todo.title,content:this.todo.content,image:this.todo.imagePath})
         })
       }
       else{
@@ -41,30 +54,43 @@ export class TodoCreateComponent implements OnInit {
     });
   }
 
+  //Image Upload Method
+  onImagePicked(event:Event){
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image:file});
+    this.form.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    }
+    reader.readAsDataURL(file);
+  }
 
   //method
-  onCreate(form:NgForm) {
-    if(form.invalid){
+  onCreate() {
+    if(this.form.invalid){
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create'){
       const todo: Todo = {
         id: null,
-        title: form.value.title,
-        content: form.value.content
+        title: this.form.value.title,
+        content: this.form.value.content,
+        imagePath: null
       }
-      this.todosService.addTodo(todo.title,todo.content)
+      this.todosService.addTodo(todo.title,todo.content,this.form.value.image)
     }
     else{
       //Edit
       const todo: Todo = {
         id: this.todoId,
-        title: form.value.title,
-        content: form.value.content
+        title: this.form.value.title,
+        content: this.form.value.content,
+        imagePath: this.form.value.image
       }
-      this.todosService.updateTodo(todo.id,todo.title,todo.content);
+      this.todosService.updateTodo(todo.id,todo.title,todo.content,todo.imagePath);
     }
-    form.resetForm();
+    this.form.reset();
   }
 }

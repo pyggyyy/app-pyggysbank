@@ -9,26 +9,28 @@ import { Router } from '@angular/router';
 @Injectable({providedIn: 'root'})
 export class TodoService {
     private todos: Todo[] = [];
-    private todosUpdated = new Subject<Todo[]>();
+    private todosUpdated = new Subject<{todos: Todo[], todoCount: number}>();
 
     constructor(private http: HttpClient, private router: Router) {
 
     }
 
-    getTodos() {
-        this.http.get<{message: string,todos:any}>('http://localhost:3000/api/todos')
+    getTodos(todosPerPage: number, currentPage: number) {
+        const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
+        this.http.get<{message: string,todos:any,maxTodos: number}>('http://localhost:3000/api/todos' + queryParams)
         .pipe(map((todoData) => {
-            return todoData.todos.map(todo => {
+            return {todos: todoData.todos.map(todo => {
                 return{
                     title: todo.title,
                     content: todo.content,
-                    id: todo._id
+                    id: todo._id,
+                    imagePath: todo.imagePath
                 }
-            })
+            }), maxTodos: todoData.maxTodos}
         }))
-        .subscribe((transformedTodos) => {
-            this.todos = transformedTodos;
-            this.todosUpdated.next([...this.todos]);
+        .subscribe((transformedTodosData) => {
+            this.todos = transformedTodosData.todos;
+            this.todosUpdated.next({todos: [...this.todos],todoCount:transformedTodosData.maxTodos});
         });
     }
 
@@ -37,48 +39,49 @@ export class TodoService {
     }
 
     getTodo(id: string){
-        return this.http.get<{_id:string, title:string,content:string}>('http://localhost:3000/api/todos/'+ id);
+        return this.http.get<{_id:string, title:string,content:string, imagePath: string}>('http://localhost:3000/api/todos/'+ id);
     }
 
-    addTodo(title:string, content:string){
-        const todo: Todo = {
-            id:null,
-            title:title,
-            content:content
+    addTodo(title:string, content:string, image: File){
+        const todoData = new FormData();
+        todoData.append('title', title);
+        if(content){
+            todoData.append('content', content);
         }
-        this.http.post<{message:string, todoId: string}>('http://localhost:3000/api/todos',todo)
+        if(image){
+            todoData.append('image', image, title);
+        }
+        this.http.post<{message:string, todo: Todo}>('http://localhost:3000/api/todos',todoData)
         .subscribe(responseData => {
-            const id = responseData.todoId;
-            todo.id = id;
-            this.todos.push(todo);
-            this.todosUpdated.next([...this.todos]);
             this.router.navigate(['/']);
         });
     }
 
-    updateTodo(id: string, title: string, content: string){
-        const todo: Todo = {
-            id:id,
-            title: title,
-            content: content
-        };
-        this.http.put('http://localhost:3000/api/todos/'+ id, todo)
+    updateTodo(id: string, title: string, content: string, image: File | string){
+        let todoData: Todo | FormData;
+        if(typeof(image) === 'object'){
+            todoData = new FormData();
+            todoData.append('id',id);
+            todoData.append('title',title);
+            todoData.append('content',content);
+            todoData.append('image',image, title);
+        }
+        else{
+            todoData = {
+                id:id,
+                title: title,
+                content:content,
+                imagePath:image as string
+            }
+        }
+        this.http.put('http://localhost:3000/api/todos/'+ id, todoData)
         .subscribe(response => {
-            const updatedTodos = [...this.todos];
-            const oldTodoIndex = updatedTodos.findIndex(p => p.id === todo.id);
-            updatedTodos[oldTodoIndex] = todo;
-            this.todos = updatedTodos;
-            this.todosUpdated.next([...this.todos]);
             this.router.navigate(['/']);
         });
     }
 
     deleteTodo(todoId: string) {
-        this.http.delete('http://localhost:3000/api/todos/'+todoId)
-        .subscribe(() => {
-            const updatedTodos = this.todos.filter(todo => todo.id !== todoId);
-            this.todos = updatedTodos;
-            this.todosUpdated.next([...this.todos]);
-        });
+        return this.http.delete('http://localhost:3000/api/todos/'+todoId)
+        
     }
 }

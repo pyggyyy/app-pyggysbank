@@ -4,11 +4,15 @@
         <mat-expansion-panel-header>
             {{ todo.title }}
         </mat-expansion-panel-header>
-        <p>{{ todo.content }}</p>
+        <div class="todo-img" *ngIf="todo.imagePath">
+            <img [src]="todo.imagePath" [alt]="todo.title">
+        </div>
+        <p *ngIf="todo.content">{{ todo.content }}</p>
         <mat-action-row>
             <a mat-button color="primary" [routerLink]="['/edit',todo.id]">Edit</a>
             <button mat-button color="warm" (click)="onDelete(todo.id)">Delete</button>
         </mat-action-row>
     </mat-expansion-panel>
 </mat-accordion>
+<mat-paginator [length]="totalTodos" [pageSize]="todosPerPage" [pageSizeOptions]="todoSizeOptions" (page)="onChangedPage($event)" *ngIf="todos.length > 0"></mat-paginator>
 <p class="info-text mat-body-1" *ngIf="todos.length == 0 && !isLoading">No Todos Added Yet</p>

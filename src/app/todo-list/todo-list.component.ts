@@ -5,6 +5,7 @@ import { Todo } from './../todo.model';
 
 //Import Service
 import { TodoService } from '../services/todos.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-todo-list',
@@ -15,22 +16,37 @@ export class TodoListComponent implements OnInit, OnDestroy {
   //Declare Variable
   todos: Todo[] = [];
   isLoading = false;
+  totalTodos = 0;
+  todosPerPage = 5;
+  currentPage = 1;
+  todoSizeOptions = [2,5,10];
   private todosSub: Subscription
 
   constructor(public todosService: TodoService){};
 
   ngOnInit() {
     this.isLoading = true;
-    this.todosService.getTodos();
+    this.todosService.getTodos(this.todosPerPage,this.currentPage);
     this.todosSub = this.todosService.getTodoUpdateListener()
-    .subscribe((todos: Todo[]) => {
+    .subscribe((todosData: {todos: Todo[], todoCount: number}) => {
       this.isLoading = false;
-      this.todos = todos;
+      this.totalTodos = todosData.todoCount;
+      this.todos = todosData.todos;
     });
   }
 
+  onChangedPage(pageData: PageEvent){
+    this.isLoading = true;
+    this.currentPage=pageData.pageIndex + 1;
+    this.todosPerPage = pageData.pageSize;
+    this.todosService.getTodos(this.todosPerPage,this.currentPage);
+  }
+
   onDelete(todoId: string){
-    this.todosService.deleteTodo(todoId);
+    this.isLoading = true;
+    this.todosService.deleteTodo(todoId).subscribe(() => {
+      this.todosService.getTodos(this.todosPerPage,this.currentPage);
+    });
   }
 
   ngOnDestroy() {
