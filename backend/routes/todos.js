@@ -72,7 +72,8 @@ router.put('/:id', multer({storage: storage}).single('image'), (req,res,next) =>
 router.get('',(req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
-    const todoQuery = Todo.find();
+    const todoQuery = Todo.find()
+    .sort({ _id: -1 }); // Sort by '_id' in descending order (newest first)
     let fetchedTodos;
     if(pageSize && currentPage){
         todoQuery.skip(pageSize * (currentPage - 1))
