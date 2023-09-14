@@ -15,8 +15,9 @@ export class TodoService {
 
     }
 
-    getTodos() {
-        this.http.get<{message: string,todos:any}>('http://localhost:3000/api/todos')
+    getTodos(todosPerPage: number, currentPage: number) {
+        const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
+        this.http.get<{message: string,todos:any}>('http://localhost:3000/api/todos' + queryParams)
         .pipe(map((todoData) => {
             return todoData.todos.map(todo => {
                 return{

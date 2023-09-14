@@ -17,7 +17,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
   todos: Todo[] = [];
   isLoading = false;
   totalTodos = 10;
-  todosPerPage = 5;
+  todosPerPage = 3;
+  currentPage = 1;
   todoSizeOptions = [2,5,10];
   private todosSub: Subscription
 
@@ -25,7 +26,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.todosService.getTodos();
+    this.todosService.getTodos(this.todosPerPage,this.currentPage);
     this.todosSub = this.todosService.getTodoUpdateListener()
     .subscribe((todos: Todo[]) => {
       this.isLoading = false;
@@ -34,7 +35,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   onChangedPage(pageData: PageEvent){
-    console.log(pageData);
+    this.currentPage=pageData.pageIndex + 1;
+    this.todosPerPage = pageData.pageSize;
+    this.todosService.getTodos(this.todosPerPage,this.currentPage);
   }
 
   onDelete(todoId: string){
