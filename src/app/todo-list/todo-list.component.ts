@@ -6,6 +6,7 @@ import { Todo } from './../todo.model';
 //Import Service
 import { TodoService } from '../services/todos.service';
 import { PageEvent } from '@angular/material/paginator';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -20,9 +21,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
   todosPerPage = 5;
   currentPage = 1;
   todoSizeOptions = [2,5,10];
-  private todosSub: Subscription
+  userIsAuthenticated = false;
+  private todosSub: Subscription;
+  private authStatusSub: Subscription;
 
-  constructor(public todosService: TodoService){};
+  constructor(public todosService: TodoService, private authService: AuthService){};
 
   ngOnInit() {
     this.isLoading = true;
@@ -32,6 +35,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.totalTodos = todosData.todoCount;
       this.todos = todosData.todos;
+    });
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    //Set Subscription Listener for Authorizatoin
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
     });
   }
 
@@ -51,5 +59,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.todosSub.unsubscribe();
+    this.authStatusSub.unsubscribe();
   }
 }
