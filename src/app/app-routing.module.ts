@@ -2,15 +2,21 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { TodoListComponent } from "./todo-list/todo-list.component";
 import { TodoCreateComponent } from "./todo-create/todo-create.component";
+import { LoginComponent } from "./auth/login/login.component";
+import { SignupComponent } from "./auth/signup/signup.component";
+import { AuthGuard } from "./auth/auth.guard";
 
 const routes: Routes = [
     {path:'', component: TodoListComponent},
-    {path:'create',component:TodoCreateComponent},
-    {path:'edit/:todoId',component:TodoCreateComponent},
+    {path:'create',component:TodoCreateComponent, canActivate:[AuthGuard]},
+    {path:'edit/:todoId',component:TodoCreateComponent, canActivate:[AuthGuard]},
+    {path:'login',component:LoginComponent},
+    {path:'signup',component:SignupComponent},
 ]
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers:[AuthGuard]
 })
 
 export class AppRoutingModule{ }

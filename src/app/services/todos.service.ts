@@ -48,6 +48,9 @@ export class TodoService {
         if(content){
             todoData.append('content', content);
         }
+        else{
+            todoData.append('content', '');
+        }
         if(image){
             todoData.append('image', image, title);
         }
@@ -63,8 +66,15 @@ export class TodoService {
             todoData = new FormData();
             todoData.append('id',id);
             todoData.append('title',title);
-            todoData.append('content',content);
-            todoData.append('image',image, title);
+            if(content){
+                todoData.append('content', content);
+            }
+            else{
+                todoData.append('content', '');
+            }
+            if(image){
+                todoData.append('image',image, title);
+            }
         }
         else{
             todoData = {
