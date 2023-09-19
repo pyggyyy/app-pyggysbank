@@ -33,7 +33,8 @@ router.post('', checkAuth, multer({storage: storage}).single('image') ,(req,res,
     const todo = new Todo({
         title: req.body.title,
         content: req.body.content,
-        imagePath: null
+        imagePath: null,
+        creator:req.userData.userId
     });
     if(req.file){
         todo.imagePath = url + '/images/' + req.file.filename;
@@ -59,14 +60,21 @@ router.put('/:id', checkAuth, multer({storage: storage}).single('image'), (req,r
         _id: req.body.id,
         title:req.body.title,
         content: req.body.content,
-        imagePath: imagePath
+        imagePath: imagePath,
+        creator: req.userData.userId
     })
     console.log(todo);
-    Todo.updateOne({_id:req.params.id},todo).then(result => {
+    Todo.updateOne({_id:req.params.id, creator:req.userData.userId},todo).then(result => {
         console.log(result);
-        res.status(200).json({
-            message: 'Update Succesful'
-        })
+        if(result.modifiedCount > 0){
+            res.status(200).json({
+                message: 'Update Succesful'
+            })
+        } else{
+            res.status(401).json({
+                message: 'Not Authorized'
+            })
+        }
     })
 })
 
@@ -106,9 +114,17 @@ router.get('/:id',(req,res,next) => {
 })
 
 router.delete('/:id', checkAuth, (req,res,next) => {
-    Todo.deleteOne({_id:req.params.id}).then(result => {
+    Todo.deleteOne({_id:req.params.id, creator: req.userData.userId}).then(result => {
         console.log(result);
-        res.status(200).json({message: 'Todo Deleted'});
+        if(result.deletedCount > 0){
+            res.status(200).json({
+                message: 'Deletion Succesful'
+            })
+        } else{
+            res.status(401).json({
+                message: 'Not Authorized'
+            })
+        }
     })
 })
 

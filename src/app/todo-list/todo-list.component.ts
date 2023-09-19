@@ -22,6 +22,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   todoSizeOptions = [2,5,10];
   userIsAuthenticated = false;
+  userId: string;
   private todosSub: Subscription;
   private authStatusSub: Subscription;
 
@@ -32,6 +33,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.todosService.getTodos(this.todosPerPage, this.currentPage);
+    this.userId = this.authService.getUserId();
     this.todosSub = this.todosService.getTodoUpdateListener()
     .subscribe((todosData: { todos: Todo[], todoCount: number }) => {
       this.isLoading = false;
@@ -42,6 +44,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     //Set Subscription Listener for Authorizatoin
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
     });
   }
 

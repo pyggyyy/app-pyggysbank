@@ -42,7 +42,8 @@ export class TodoCreateComponent implements OnInit {
             id:todoData._id,
             title:todoData.title,
             content:todoData.content,
-            imagePath: todoData.imagePath
+            imagePath: todoData.imagePath,
+            creator:todoData.creator
           }
           this.form.setValue({title:this.todo.title,content:this.todo.content,image:this.todo.imagePath})
         })
@@ -73,23 +74,11 @@ export class TodoCreateComponent implements OnInit {
     }
     this.isLoading = true;
     if(this.mode === 'create'){
-      const todo: Todo = {
-        id: null,
-        title: this.form.value.title,
-        content: this.form.value.content,
-        imagePath: null
-      }
-      this.todosService.addTodo(todo.title,todo.content,this.form.value.image)
+      this.todosService.addTodo(this.form.value.title,this.form.value.content,this.form.value.image)
     }
     else{
       //Edit
-      const todo: Todo = {
-        id: this.todoId,
-        title: this.form.value.title,
-        content: this.form.value.content,
-        imagePath: this.form.value.image
-      }
-      this.todosService.updateTodo(todo.id,todo.title,todo.content,todo.imagePath);
+      this.todosService.updateTodo(this.todoId,this.form.value.title, this.form.value.content,this.form.value.image);
     }
     this.form.reset();
   }

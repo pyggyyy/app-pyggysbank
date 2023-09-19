@@ -24,7 +24,8 @@ export class TodoService {
                     title: todo.title,
                     content: todo.content,
                     id: todo._id,
-                    imagePath: todo.imagePath
+                    imagePath: todo.imagePath,
+                    creator:todo.creator
                 }
             }), maxTodos: todoData.maxTodos}
         }))
@@ -39,7 +40,7 @@ export class TodoService {
     }
 
     getTodo(id: string){
-        return this.http.get<{_id:string, title:string,content:string, imagePath: string}>('http://localhost:3000/api/todos/'+ id);
+        return this.http.get<{_id:string, title:string,content:string, imagePath: string,creator:string}>('http://localhost:3000/api/todos/'+ id);
     }
 
     addTodo(title:string, content:string, image: File){
@@ -81,7 +82,8 @@ export class TodoService {
                 id:id,
                 title: title,
                 content:content,
-                imagePath:image as string
+                imagePath:image as string,
+                creator:null
             }
         }
         this.http.put('http://localhost:3000/api/todos/'+ id, todoData)
