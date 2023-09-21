@@ -1,9 +1,11 @@
 import { Component } from "@angular/core";
 
-@Component{
-    templateUrl:'./error.component.html'
-}
+@Component({
+    selector: 'app-error',
+    templateUrl: './error.component.html',
+    styleUrls: ['./error.component.css']
+  })
 
 export class ErrorComponent{
-    message = 'An Unknown Error Occured'
+    message = 'An Unknown Error Occured!'
 }
