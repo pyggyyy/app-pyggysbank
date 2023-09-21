@@ -33,9 +33,7 @@ router.post('/login',(req,res,next) => {
     User.findOne({email:req.body.email})
     .then(user => {
         if(!user){
-            return res.status(401).json({
-                message: 'Auth Failed for user find'
-            })
+            throw new Error('Auth failed');
         }
         fetchedUser = user;
         return bcrypt.compare(req.body.password,user.password)
