@@ -65,6 +65,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
       
       // Manually update the paginator's length property
       this.paginator.length = this.totalTodos;
+    },() => {
+      this.isLoading = false;
     });
   }
 
