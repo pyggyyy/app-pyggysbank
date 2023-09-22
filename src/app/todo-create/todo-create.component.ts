@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Todo } from './../todo.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
 import { TodoService } from '../services/todos.service';
 import { mimeType } from './mimi-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-todo-create',
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.css']
 })
-export class TodoCreateComponent implements OnInit {
+export class TodoCreateComponent implements OnInit, OnDestroy {
 
   private mode = 'create';
   private todoId: string;
@@ -23,9 +25,15 @@ export class TodoCreateComponent implements OnInit {
 
   imagePreview: string;
 
-  constructor(public todosService: TodoService, public route: ActivatedRoute){};
+  private authStatusSub: Subscription;
+
+  constructor(public todosService: TodoService, public route: ActivatedRoute, private authSerivce:AuthService){};
 
   ngOnInit() {
+    this.authStatusSub = this.authSerivce.getAuthStatusListener()
+    .subscribe(authStatus => {
+      this.isLoading = false;
+    })
     this.form = new FormGroup({
       'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
       'content': new FormControl(null, []),
@@ -81,5 +89,9 @@ export class TodoCreateComponent implements OnInit {
       this.todosService.updateTodo(this.todoId,this.form.value.title, this.form.value.content,this.form.value.image);
     }
     this.form.reset();
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }
