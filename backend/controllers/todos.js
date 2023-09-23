@@ -45,7 +45,7 @@ exports.editTodo = (req,res,next) => {
     console.log(todo);
     Todo.updateOne({_id:req.params.id, creator:req.userData.userId},todo).then(result => {
         console.log(result);
-        if(result.modifiedCount > 0){
+        if(result.matchedCount > 0){
             res.status(200).json({
                 message: 'Update Succesful'
             })
