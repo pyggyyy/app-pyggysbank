@@ -8,6 +8,7 @@
 credentials.txt
 
 nodemon.json
+Procfile
 
 /backend/images
 
