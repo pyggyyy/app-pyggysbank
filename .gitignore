@@ -11,6 +11,8 @@ nodemon.json
 Procfile
 
 /backend/images
+/backend/Procfile
+/backend/app-pyggy.zip
 
 # Node
 /node_modules
