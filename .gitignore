@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+environment.prod.ts
 credentials.txt
 
 nodemon.json
@@ -27,6 +28,8 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+
+
 
 # Visual Studio Code
 .vscode/*
