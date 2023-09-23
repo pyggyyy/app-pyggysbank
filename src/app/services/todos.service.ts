@@ -6,6 +6,10 @@ import { Subject } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+import { environment } from './../../environments/environment';
+
+const BACKENDURL = environment.apiUrl + 'todos/';
+
 @Injectable({providedIn: 'root'})
 export class TodoService {
     private todos: Todo[] = [];
@@ -17,7 +21,7 @@ export class TodoService {
 
     getTodos(todosPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
-        this.http.get<{message: string,todos:any,maxTodos: number}>('http://localhost:3000/api/todos' + queryParams)
+        this.http.get<{message: string,todos:any,maxTodos: number}>(BACKENDURL + queryParams)
         .pipe(map((todoData) => {
             return {todos: todoData.todos.map(todo => {
                 return{
@@ -40,7 +44,7 @@ export class TodoService {
     }
 
     getTodo(id: string){
-        return this.http.get<{_id:string, title:string,content:string, imagePath: string,creator:string}>('http://localhost:3000/api/todos/'+ id);
+        return this.http.get<{_id:string, title:string,content:string, imagePath: string,creator:string}>(BACKENDURL+ id);
     }
 
     addTodo(title:string, content:string, image: File){
@@ -55,7 +59,7 @@ export class TodoService {
         if(image){
             todoData.append('image', image, title);
         }
-        this.http.post<{message:string, todo: Todo}>('http://localhost:3000/api/todos',todoData)
+        this.http.post<{message:string, todo: Todo}>(BACKENDURL,todoData)
         .subscribe(responseData => {
             this.router.navigate(['/']);
         });
@@ -86,14 +90,14 @@ export class TodoService {
                 creator:null
             }
         }
-        this.http.put('http://localhost:3000/api/todos/'+ id, todoData)
+        this.http.put(BACKENDURL+ id, todoData)
         .subscribe(response => {
             this.router.navigate(['/']);
         });
     }
 
     deleteTodo(todoId: string) {
-        return this.http.delete('http://localhost:3000/api/todos/'+todoId)
+        return this.http.delete(BACKENDURL+todoId)
         
     }
 }
