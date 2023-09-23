@@ -7,6 +7,8 @@
 /bazel-out
 credentials.txt
 
+nodemon.json
+
 /backend/images
 
 # Node

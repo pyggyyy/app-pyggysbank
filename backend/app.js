@@ -9,14 +9,11 @@ const userRoutes = require('./routes/user');
 const app = express();
 
 //Get from Mongo Instance Connect Modal
-const fs = require('fs');
-
-// Read the content of the file synchronously (you can also use async methods)
-const credentialsFilePath = './credentials.txt';
-const credentials = fs.readFileSync(credentialsFilePath, 'utf8').trim();
 
 
-mongoose.connect(credentials)
+
+
+mongoose.connect(process.env.MONGO_ATLAS_DB)
 .then(() => {
     console.log('Connected to DB');
 })
