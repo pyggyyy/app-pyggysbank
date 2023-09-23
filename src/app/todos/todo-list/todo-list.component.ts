@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 import { Todo } from './../todo.model';
 
 //Import Service
-import { TodoService } from '../services/todos.service';
+import { TodoService } from '../../services/todos.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-todo-list',

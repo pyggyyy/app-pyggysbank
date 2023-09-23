@@ -3,10 +3,10 @@ import { Todo } from './../todo.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
-import { TodoService } from '../services/todos.service';
+import { TodoService } from '../../services/todos.service';
 import { mimeType } from './mimi-type.validator';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-todo-create',

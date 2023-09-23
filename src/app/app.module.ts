@@ -7,9 +7,9 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 
 
 import { AppComponent } from './app.component';
-import { TodoCreateComponent } from './todo-create/todo-create.component';
+import { TodoCreateComponent } from './todos/todo-create/todo-create.component';
 import { HeaderComponent } from './header/header.component';
-import { TodoListComponent } from './todo-list/todo-list.component';
+import { TodoListComponent } from './todos/todo-list/todo-list.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
