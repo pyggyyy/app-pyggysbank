@@ -20,6 +20,10 @@ export class TodoCreateComponent implements OnInit, OnDestroy {
   todo: Todo;
   isLoading = false;
 
+  //Edit Img Preview
+  todoHasImg = false;
+  todoExistingImg : string;
+
   //Define Form on TS
   form: FormGroup;
 
@@ -52,6 +56,10 @@ export class TodoCreateComponent implements OnInit, OnDestroy {
             content:todoData.content,
             imagePath: todoData.imagePath,
             creator:todoData.creator
+          }
+          if(this.todo.imagePath){
+            this.todoHasImg = true;
+            this.todoExistingImg = this.todo.imagePath;
           }
           this.form.setValue({title:this.todo.title,content:this.todo.content,image:this.todo.imagePath})
         })

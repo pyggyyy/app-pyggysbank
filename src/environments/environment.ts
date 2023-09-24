@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:3000/api/'
+    apiUrl: 'http://pyggy-backend-env.eba-pc6ryufg.us-east-1.elasticbeanstalk.com/api/'
 }
