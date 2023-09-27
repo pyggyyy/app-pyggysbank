@@ -1,5 +1,28 @@
 const Todo = require('../models/todo');
 
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
+const bucketName = process.env.BUCKET_NAME;
+const regionName = process.env.BUCKET_REGION;
+const accessKey= process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+
+const publicBucket = process.env.PUBLIC_BUCKET;
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey
+    },
+    region: regionName
+})
+
+
+const MIME_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/jpg':'jpg'
+}
 
 //Routes Here
 exports.createTodo = (req,res,next) => {
@@ -11,7 +34,23 @@ exports.createTodo = (req,res,next) => {
         creator:req.userData.userId
     });
     if(req.file){
-        todo.imagePath = url + '/images/' + req.file.filename;
+        if(!MIME_TYPE_MAP[req.file.mimetype]){
+            res.status(500).json({
+                message: 'Invalid File Type'
+            })
+            
+        }
+        let filename = req.file.originalname.toLocaleLowerCase().split(' ').join('-') + '-' + Date.now() + '.' + MIME_TYPE_MAP[req.file.mimetype];
+
+        const command = new PutObjectCommand({
+            Bucket: bucketName,
+            Key:filename,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype
+        })
+
+        s3.send(command);
+        todo.imagePath = publicBucket + filename;
     }
     todo.save().then(createdTodo => {
         res.status(201).json({

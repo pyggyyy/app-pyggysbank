@@ -6,7 +6,11 @@ const MIME_TYPE_MAP = {
     'image/jpg':'jpg'
 }
 
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage();
+
+
+
+/*const storage = multer.diskStorage({
     destination: (req,file,cb) => {
         const isValid = MIME_TYPE_MAP[file.mimetype];
         let error = new Error('Invalid mime type');
@@ -20,7 +24,7 @@ const storage = multer.diskStorage({
         const ext = MIME_TYPE_MAP[file.mimetype];
         cb(null,name + '-' + Date.now() + '.' + ext);
     }
-})
+})*/
 
 //Makes middleware extract to user in route module
 module.exports = multer({storage: storage}).single('image');
