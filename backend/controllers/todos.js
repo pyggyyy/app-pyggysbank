@@ -71,8 +71,23 @@ exports.createTodo = (req,res,next) => {
 exports.editTodo = (req,res,next) => {
     let imagePath = req.body.imagePath;
     if(req.file){
-        const url = req.protocol + '://' + req.get('host');
-        imagePath = url  + '/images/' + req.file.filename;
+        if(!MIME_TYPE_MAP[req.file.mimetype]){
+            res.status(500).json({
+                message: 'Invalid File Type'
+            })
+            
+        }
+        let filename = req.file.originalname.toLocaleLowerCase().split(' ').join('-') + '-' + Date.now() + '.' + MIME_TYPE_MAP[req.file.mimetype];
+
+        const command = new PutObjectCommand({
+            Bucket: bucketName,
+            Key:filename,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype
+        })
+
+        s3.send(command);
+        imagePath = publicBucket + filename;
     }
     const todo = new Todo({
         _id: req.body.id,
