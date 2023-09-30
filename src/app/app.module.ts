@@ -16,6 +16,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
+import { UserInfoCreateComponent } from './userinfo/userinfo-create/userinfo-create.component';
 
 //Add Materials Module
 import { AngularMaterialModule } from './angular-materials.module';
@@ -29,7 +30,8 @@ import { AngularMaterialModule } from './angular-materials.module';
     TodoListComponent,
     LoginComponent,
     SignupComponent,
-    ErrorComponent
+    ErrorComponent,
+    UserInfoCreateComponent
   ],
   imports: [
     BrowserModule,
