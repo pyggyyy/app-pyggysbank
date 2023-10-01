@@ -22,8 +22,9 @@ export class UserInfoService {
     return this.userinfosUpdated.asObservable();
   }
 
+
   getUserInfo(id: string) {
-    return this.http.get<{ _id: string; username: string; bio: string; profilePic: string; creator: string }>(BACKENDURL + id);
+    return this.http.get<{ _id: string; username: string; bio: string; profilePic: string; creator: string, net:number }>(BACKENDURL + id);
   }
 
   createUserInfo(username:string, bio:string, image: File){
@@ -38,13 +39,15 @@ export class UserInfoService {
         if(image){
             userinfoData.append('image', image, username);
         }
+        console.log(userinfoData);
         this.http.post<{message:string, userinfo: UserInfo}>(BACKENDURL,userinfoData)
         .subscribe(responseData => {
+            console.log(responseData);
             this.router.navigate(['/']);
         });
     }
 
-  updateUserInfo(id: string, username: string, bio: string, profilePic: File | string) {
+  updateUserInfo(id: string, username: string, bio: string, profilePic: File | string, net: number) {
     let userinfoData: UserInfo | FormData;
     if (typeof profilePic === 'object') {
       userinfoData = new FormData();
@@ -64,6 +67,7 @@ export class UserInfoService {
         username: username,
         bio: bio,
         profilePic: profilePic as string,
+        net: net,
         creator: null,
       };
     }

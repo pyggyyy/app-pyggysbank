@@ -9,6 +9,8 @@ const extractFile = require('../middleware/file');
 // Define your routes for UserInfo here, including create, read, update, and delete operations.
 // Example routes:
 router.post('/', checkAuth, extractFile, userInfoController.createUserInfo);
+router.put('/:id', checkAuth, extractFile, userInfoController.editUserInfo);
+router.get('/:id', userInfoController.getUserInfo);
 //router.get('/:id', userInfoController.getUserInfo);
 //router.put('/:id', userInfoController.updateUserInfo);
 

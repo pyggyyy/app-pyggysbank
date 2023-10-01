@@ -30,8 +30,10 @@ exports.createUserInfo = (req,res,next) => {
         username: req.body.username,
         bio: req.body.bio,
         profilePic: null,
-        creator:req.userData.userId
+        creator:req.userData.userId,
+        net: 0
     });
+    console.log(userinfo);
     if(req.file){
         if(!MIME_TYPE_MAP[req.file.mimetype]){
             res.status(500).json({
@@ -52,17 +54,65 @@ exports.createUserInfo = (req,res,next) => {
         userinfo.profilePic = publicBucket + filename;
     }
     userinfo.save().then(createdUserInfo => {
+        console.log(createdUserInfo);
         res.status(201).json({
             message: 'UserInfo Added Succesfully',
             userinfo: {
-                ...userinfo,
-                id: userinfo._id,
+                ...createdUserInfo,
+                id: createdUserInfo._id,
             }
         });
     })
     .catch(error => {
         res.status(500).json({
             message: 'Creating UserInfo Failed'
+        })
+    })
+}
+
+exports.editUserInfo = (req,res,next) => {
+    let imagePath = req.body.profilePic;
+    if(req.file){
+        if(!MIME_TYPE_MAP[req.file.mimetype]){
+            res.status(500).json({
+                message: 'Invalid File Type'
+            })
+            
+        }
+        let filename = req.file.originalname.toLocaleLowerCase().split(' ').join('-') + '-' + Date.now() + '.' + MIME_TYPE_MAP[req.file.mimetype];
+
+        const command = new PutObjectCommand({
+            Bucket: bucketName,
+            Key:filename,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype
+        })
+
+        s3.send(command);
+        imagePath = publicBucket + filename;
+    }
+    const userinfo = new UserInfo({
+        username: req.body.username,
+        bio: req.body.bio,
+        profilePic: imagePath,
+        creator: req.userData.userId,
+    })
+    console.log(userinfo);
+    UserInfo.updateOne({creator:req.userData.userId},userinfo).then(result => {
+        console.log(result);
+        if(result.matchedCount > 0){
+            res.status(200).json({
+                message: 'Update Succesful'
+            })
+        } else{
+            res.status(401).json({
+                message: 'Not Authorized'
+            })
+        }
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: "Couldn't Update Todo"
         })
     })
 }
@@ -84,55 +134,5 @@ exports.getUserInfo = (req, res, next) => {
     });
 };
 
-exports.updateUserInfo = (req, res, next) => {
-  const { id, username, bio } = req.body;
-  const profilePic = req.file ? req.file : null;
-
-  UserInfo.findOne({ creator: id })
-    .then((userInfo) => {
-      if (!userInfo) {
-        return res.status(404).json({ message: 'User Info Not Found' });
-      }
-
-      // Update user info fields
-      userInfo.username = username;
-      userInfo.bio = bio;
-      userInfo.creator = req.userData.userId
-
-      // Check if a new profile picture is provided
-      if (profilePic) {
-        if(!MIME_TYPE_MAP[req.file.mimetype]){
-            res.status(500).json({
-                message: 'Invalid File Type'
-            })
-            
-        }
-        let filename = req.file.originalname.toLocaleLowerCase().split(' ').join('-') + '-' + Date.now() + '.' + MIME_TYPE_MAP[req.file.mimetype];
-
-        const command = new PutObjectCommand({
-            Bucket: bucketName,
-            Key:filename,
-            Body: req.file.buffer,
-            ContentType: req.file.mimetype
-        })
-
-        s3.send(command);
-        userInfo.imagePath = publicBucket + filename;
-      }
-
-      return userInfo.save();
-    })
-    .then((updatedUserInfo) => {
-      res.status(200).json({
-        message: 'User Info Updated Successfully',
-        userInfo: updatedUserInfo,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Couldn't Update User Info",
-      });
-    });
-};
 
 

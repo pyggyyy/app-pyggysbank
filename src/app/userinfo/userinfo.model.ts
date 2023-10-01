@@ -3,5 +3,6 @@ export interface UserInfo {
     username: string;
     bio: string;
     profilePic: string;
-    creator: string; // You can replace this with the actual user model if needed
+    creator: string; 
+    net: number;
 }  

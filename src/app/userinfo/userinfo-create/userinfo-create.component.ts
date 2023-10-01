@@ -59,7 +59,8 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
             username: userinfoData.username,
             bio: userinfoData.bio,
             profilePic: userinfoData.profilePic,
-            creator: userinfoData.creator
+            creator: userinfoData.creator,
+            net: userinfoData.net
           };
 
           if (this.userinfo.profilePic) {
@@ -70,7 +71,8 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
           this.form.setValue({
             username: this.userinfo.username,
             bio: this.userinfo.bio,
-            profilePic: this.userinfo.profilePic
+            profilePic: this.userinfo.profilePic,
+            net: this.userinfo.net
           });
         });
       } else {
@@ -99,10 +101,11 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
     }
     this.isLoading = true;
     if (this.mode === 'create') {
+        console.log('creating');
       this.userinfoService.createUserInfo(this.form.value.username, this.form.value.bio, this.form.value.profilePic);
     } else {
       // Edit
-      this.userinfoService.updateUserInfo(this.userinfoId, this.form.value.username, this.form.value.bio, this.form.value.profilePic);
+      this.userinfoService.updateUserInfo(this.userinfoId, this.form.value.username, this.form.value.bio, this.form.value.profilePic,this.form.value.net);
     }
     this.form.reset();
   }

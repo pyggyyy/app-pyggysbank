@@ -5,7 +5,8 @@ const userInfoSchema = mongoose.Schema({
     username: { type: String, required: true },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     profilePic: { type: String }, // Store the S3 URL for the profile picture
-    bio: { type: String }
+    bio: { type: String },
+    net: {type: Number},
 });
 
 module.exports = mongoose.model('UserInfo', userInfoSchema);
