@@ -50,29 +50,33 @@ export class UserInfoService {
   updateUserInfo(id: string, username: string, bio: string, profilePic: File | string, net: number) {
     let userinfoData: UserInfo | FormData;
     if (typeof profilePic === 'object') {
-      userinfoData = new FormData();
-      userinfoData.append('id', id);
-      userinfoData.append('username', username);
-      if (bio) {
-        userinfoData.append('bio', bio);
-      } else {
-        userinfoData.append('bio', '');
-      }
-      if (profilePic) {
-        userinfoData.append('profilePic', profilePic, username);
-      }
+        userinfoData = new FormData();
+        userinfoData.append('id', id);
+        userinfoData.append('username', username);
+        if (bio) {
+            userinfoData.append('bio', bio);
+        } else {
+            userinfoData.append('bio', '');
+        }
+        if (profilePic) {
+            userinfoData.append('image', profilePic, username);
+        }
+        
     } else {
-      userinfoData = {
-        id: id,
-        username: username,
-        bio: bio,
-        profilePic: profilePic as string,
-        net: net,
-        creator: null,
-      };
+        userinfoData = {
+            id: id,
+            username: username,
+            bio: bio,
+            profilePic: profilePic as string,
+            creator: null, // Keep the existing creator field as null
+            net: net
+        };
     }
+    console.log(userinfoData);
     this.http.put(BACKENDURL + id, userinfoData).subscribe((response) => {
-      this.router.navigate(['/']);
+        this.router.navigate(['/']);
     });
-  }
+    }
+
 }
+

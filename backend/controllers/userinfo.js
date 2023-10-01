@@ -72,6 +72,7 @@ exports.createUserInfo = (req,res,next) => {
 
 exports.editUserInfo = (req,res,next) => {
     let imagePath = req.body.profilePic;
+    console.log(imagePath);
     if(req.file){
         if(!MIME_TYPE_MAP[req.file.mimetype]){
             res.status(500).json({
@@ -91,14 +92,19 @@ exports.editUserInfo = (req,res,next) => {
         s3.send(command);
         imagePath = publicBucket + filename;
     }
+    console.log(req.body.id);
+    console.log(req.userData.userId);
     const userinfo = new UserInfo({
+        _id: req.body.id,
         username: req.body.username,
         bio: req.body.bio,
         profilePic: imagePath,
         creator: req.userData.userId,
+        net: req.body.net,
     })
+    console.log('working');
     console.log(userinfo);
-    UserInfo.updateOne({creator:req.userData.userId},userinfo).then(result => {
+    UserInfo.updateOne({_id:req.body.id, creator:req.userData.userId},userinfo).then(result => {
         console.log(result);
         if(result.matchedCount > 0){
             res.status(200).json({
@@ -111,6 +117,7 @@ exports.editUserInfo = (req,res,next) => {
         }
     })
     .catch(error => {
+        console.log(error);
         res.status(500).json({
             message: "Couldn't Update Todo"
         })

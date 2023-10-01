@@ -28,6 +28,8 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
 
   imagePreview: string;
 
+  net: number;
+
   private authStatusSub: Subscription;
 
   constructor(
@@ -54,6 +56,7 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.userinfoService.getUserInfo(this.userinfoId).subscribe((userinfoData) => {
           this.isLoading = false;
+          console.log(userinfoData);
           this.userinfo = {
             id: userinfoData._id,
             username: userinfoData.username,
@@ -62,6 +65,10 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
             creator: userinfoData.creator,
             net: userinfoData.net
           };
+          this.net = userinfoData.net;
+          console.log(this.userinfo.id);
+          console.log(this.userinfo.creator);
+          console.log(this.net);
 
           if (this.userinfo.profilePic) {
             this.userinfoHasImg = true;
@@ -72,7 +79,6 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
             username: this.userinfo.username,
             bio: this.userinfo.bio,
             profilePic: this.userinfo.profilePic,
-            net: this.userinfo.net
           });
         });
       } else {
@@ -105,7 +111,7 @@ export class UserInfoCreateComponent implements OnInit, OnDestroy {
       this.userinfoService.createUserInfo(this.form.value.username, this.form.value.bio, this.form.value.profilePic);
     } else {
       // Edit
-      this.userinfoService.updateUserInfo(this.userinfoId, this.form.value.username, this.form.value.bio, this.form.value.profilePic,this.form.value.net);
+      this.userinfoService.updateUserInfo(this.userinfo.id, this.form.value.username, this.form.value.bio, this.form.value.profilePic, this.net);
     }
     this.form.reset();
   }
