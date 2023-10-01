@@ -1,0 +1,23 @@
+mat-card{
+    padding: 25px;
+    margin-bottom: 35px;
+}
+mat-form-field{
+    display: block;
+}
+mat-spinner{
+    margin: auto;
+}
+.img-upload-div{
+    margin-bottom:25px ;
+}
+.img-upload-div input[type="file"]{
+    visibility: hidden;
+}
+.img-preview{
+    height: 250px;
+    margin: 1rem 0;
+}
+.img-preview img{
+    height: 100%;
+}

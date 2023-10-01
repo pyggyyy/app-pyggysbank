@@ -17,7 +17,8 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { UserInfoCreateComponent } from './userinfo/userinfo-create/userinfo-create.component';
-
+import { PlayCreateComponent } from './plays/play-create/play-create.component';
+import { PlayListComponent } from './plays/play-list/play-list.component';
 //Add Materials Module
 import { AngularMaterialModule } from './angular-materials.module';
 
@@ -31,7 +32,9 @@ import { AngularMaterialModule } from './angular-materials.module';
     LoginComponent,
     SignupComponent,
     ErrorComponent,
-    UserInfoCreateComponent
+    UserInfoCreateComponent,
+    PlayCreateComponent,
+    PlayListComponent
   ],
   imports: [
     BrowserModule,
