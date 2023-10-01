@@ -61,7 +61,11 @@ export class TodoService {
         }
         this.http.post<{message:string, todo: Todo}>(BACKENDURL,todoData)
         .subscribe(responseData => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/']).then(() => {
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+              });
         });
     }
 
@@ -92,7 +96,11 @@ export class TodoService {
         }
         this.http.put(BACKENDURL+ id, todoData)
         .subscribe(response => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/']).then(() => {
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+            });
         });
     }
 

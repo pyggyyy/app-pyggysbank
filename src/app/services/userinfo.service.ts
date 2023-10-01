@@ -43,7 +43,11 @@ export class UserInfoService {
         this.http.post<{message:string, userinfo: UserInfo}>(BACKENDURL,userinfoData)
         .subscribe(responseData => {
             console.log(responseData);
-            this.router.navigate(['/']);
+            this.router.navigate(['/']).then(() => {
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+            });
         });
     }
 
@@ -74,7 +78,11 @@ export class UserInfoService {
     }
     console.log(userinfoData);
     this.http.put(BACKENDURL + id, userinfoData).subscribe((response) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/']).then(() => {
+            setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+        });
     });
     }
 

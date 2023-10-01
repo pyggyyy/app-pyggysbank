@@ -46,7 +46,8 @@ exports.createTodo = (req,res,next) => {
             Bucket: bucketName,
             Key:filename,
             Body: req.file.buffer,
-            ContentType: req.file.mimetype
+            ContentType: req.file.mimetype,
+            CacheControl: 'no-cache', // Set the Cache-Control header
         })
 
         s3.send(command);
@@ -83,7 +84,8 @@ exports.editTodo = (req,res,next) => {
             Bucket: bucketName,
             Key:filename,
             Body: req.file.buffer,
-            ContentType: req.file.mimetype
+            ContentType: req.file.mimetype,
+            CacheControl: 'no-cache', // Set the Cache-Control header
         })
 
         s3.send(command);

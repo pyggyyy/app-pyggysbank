@@ -47,7 +47,8 @@ exports.createUserInfo = (req,res,next) => {
             Bucket: bucketName,
             Key:filename,
             Body: req.file.buffer,
-            ContentType: req.file.mimetype
+            ContentType: req.file.mimetype,
+            CacheControl: 'no-cache', // Set the Cache-Control header
         })
 
         s3.send(command);
@@ -86,7 +87,8 @@ exports.editUserInfo = (req,res,next) => {
             Bucket: bucketName,
             Key:filename,
             Body: req.file.buffer,
-            ContentType: req.file.mimetype
+            ContentType: req.file.mimetype,
+            CacheControl: 'no-cache', // Set the Cache-Control header
         })
 
         s3.send(command);
