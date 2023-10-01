@@ -5,9 +5,15 @@
 /tmp
 /out-tsc
 /bazel-out
+environment.prod.ts
 credentials.txt
 
+nodemon.json
+Procfile
+
 /backend/images
+/backend/Procfile
+/backend/app-pyggy.zip
 
 # Node
 /node_modules
@@ -22,6 +28,8 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+
+
 
 # Visual Studio Code
 .vscode/*

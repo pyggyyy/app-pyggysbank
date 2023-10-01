@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 import { Todo } from './../todo.model';
 
 //Import Service
-import { TodoService } from '../services/todos.service';
+import { TodoService } from '../../services/todos.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -22,6 +22,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   todoSizeOptions = [2,5,10];
   userIsAuthenticated = false;
+  userId: string;
   private todosSub: Subscription;
   private authStatusSub: Subscription;
 
@@ -32,6 +33,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.todosService.getTodos(this.todosPerPage, this.currentPage);
+    this.userId = this.authService.getUserId();
     this.todosSub = this.todosService.getTodoUpdateListener()
     .subscribe((todosData: { todos: Todo[], todoCount: number }) => {
       this.isLoading = false;
@@ -42,6 +44,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     //Set Subscription Listener for Authorizatoin
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
     });
   }
 
@@ -62,6 +65,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
       
       // Manually update the paginator's length property
       this.paginator.length = this.totalTodos;
+    },() => {
+      this.isLoading = false;
     });
   }
 

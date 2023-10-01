@@ -1,31 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Todo } from './../todo.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 
-import { TodoService } from '../services/todos.service';
+import { TodoService } from '../../services/todos.service';
 import { mimeType } from './mimi-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-todo-create',
   templateUrl: './todo-create.component.html',
   styleUrls: ['./todo-create.component.css']
 })
-export class TodoCreateComponent implements OnInit {
+export class TodoCreateComponent implements OnInit, OnDestroy {
 
   private mode = 'create';
   private todoId: string;
   todo: Todo;
   isLoading = false;
 
+  //Edit Img Preview
+  todoHasImg = false;
+  todoExistingImg : string;
+
   //Define Form on TS
   form: FormGroup;
 
   imagePreview: string;
 
-  constructor(public todosService: TodoService, public route: ActivatedRoute){};
+  private authStatusSub: Subscription;
+
+  constructor(public todosService: TodoService, public route: ActivatedRoute, private authSerivce:AuthService){};
 
   ngOnInit() {
+    this.authStatusSub = this.authSerivce.getAuthStatusListener()
+    .subscribe(authStatus => {
+      this.isLoading = false;
+    })
     this.form = new FormGroup({
       'title': new FormControl(null, [Validators.required, Validators.minLength(3)]),
       'content': new FormControl(null, []),
@@ -42,7 +54,12 @@ export class TodoCreateComponent implements OnInit {
             id:todoData._id,
             title:todoData.title,
             content:todoData.content,
-            imagePath: todoData.imagePath
+            imagePath: todoData.imagePath,
+            creator:todoData.creator
+          }
+          if(this.todo.imagePath){
+            this.todoHasImg = true;
+            this.todoExistingImg = this.todo.imagePath;
           }
           this.form.setValue({title:this.todo.title,content:this.todo.content,image:this.todo.imagePath})
         })
@@ -73,24 +90,16 @@ export class TodoCreateComponent implements OnInit {
     }
     this.isLoading = true;
     if(this.mode === 'create'){
-      const todo: Todo = {
-        id: null,
-        title: this.form.value.title,
-        content: this.form.value.content,
-        imagePath: null
-      }
-      this.todosService.addTodo(todo.title,todo.content,this.form.value.image)
+      this.todosService.addTodo(this.form.value.title,this.form.value.content,this.form.value.image)
     }
     else{
       //Edit
-      const todo: Todo = {
-        id: this.todoId,
-        title: this.form.value.title,
-        content: this.form.value.content,
-        imagePath: this.form.value.image
-      }
-      this.todosService.updateTodo(todo.id,todo.title,todo.content,todo.imagePath);
+      this.todosService.updateTodo(this.todoId,this.form.value.title, this.form.value.content,this.form.value.image);
     }
     this.form.reset();
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }

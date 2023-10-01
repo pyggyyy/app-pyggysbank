@@ -16,5 +16,11 @@
         <li *ngIf="userIsAuthenticated">
             <button mat-button (click)="onLogout()">Logout</button>
         </li>
+        <li *ngIf="userIsAuthenticated" class="profile">
+            <a routerLink="/userinfo/{{ userId }}">
+                <img *ngIf="profilePic" [src]="profilePic" alt="Profile Picture" />
+                <span>{{userName}}</span>
+              </a>
+        </li>
     </ul>
 </mat-toolbar>

@@ -3,4 +3,5 @@ export interface Todo{
     title: string;
     content:string;
     imagePath: string;
+    creator:string;
 }

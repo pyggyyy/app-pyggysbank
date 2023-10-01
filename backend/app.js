@@ -5,18 +5,16 @@ const mongoose = require("mongoose");
 
 const todoRoutes = require('./routes/todos');
 const userRoutes = require('./routes/user');
+const userInfoRoutes = require('./routes/userinfo');
 
 const app = express();
 
 //Get from Mongo Instance Connect Modal
-const fs = require('fs');
-
-// Read the content of the file synchronously (you can also use async methods)
-const credentialsFilePath = './credentials.txt';
-const credentials = fs.readFileSync(credentialsFilePath, 'utf8').trim();
 
 
-mongoose.connect(credentials)
+
+
+mongoose.connect(process.env.MONGO_ATLAS_DB)
 .then(() => {
     console.log('Connected to DB');
 })
@@ -26,7 +24,7 @@ mongoose.connect(credentials)
 
 app.use(bodyParser.json());
 app.unsubscribe(bodyParser.urlencoded({extended:false}));
-app.use('/images',express.static(path.join('backend/images')));
+app.use('/images',express.static(path.join('images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -37,5 +35,6 @@ app.use((req, res, next) => {
 
 app.use('/api/todos',todoRoutes);
 app.use('/api/user',userRoutes);
+app.use('/api/userinfo',userInfoRoutes);
 
 module.exports = app;
