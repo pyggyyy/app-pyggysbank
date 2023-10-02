@@ -5,7 +5,7 @@ ul{
 }
 a{
     text-decoration: none;
-    color: white;
+    color:  #001F3F;
 }
 .spacer{
     flex:1 1 auto;
@@ -18,13 +18,16 @@ ul li{
     margin-right: 25px;
 }
 ul li a{
-    background-color: #3f51b5;
-    color: white;
-    border: 1px solid white;
+    background-color: #FFD700;
+    color:  #001F3F;
+    border: 1px solid  #001F3F;
+}
+ul li .mdc-button__label{
+    color: #001F3F;
 }
 ul li a.active{
-    background-color: white;
-    color: #3f51b5;
+    background-color: #001F3F;
+    color: #FFD700;
 }
 ul .profile a{
     display: flex;
@@ -36,4 +39,7 @@ ul .profile a{
     height: 50px;
     margin-right: 10px;
     border-radius: 100%;
+}
+.mat-toolbar.mat-primary{
+    background-color: #FFD700;
 }
