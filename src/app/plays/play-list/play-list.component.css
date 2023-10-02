@@ -16,3 +16,49 @@ mat-spinner{
 mat-paginator{
     margin-top: 1rem;
 }
+mat-expansion-panel-header .header-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 50px;
+}
+mat-expansion-panel-header .stake{
+    background-color: lightpink;
+    width: 75px;
+    display: inline-block;
+    text-align: center;
+    opacity: 0.8;
+}
+mat-expansion-panel-header .payout{
+    background-color: lightgreen;
+    width: 75px;
+    display: inline-block;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* If Lost */
+mat-expansion-panel-header .graded-true.win-false .stake{
+
+    opacity: 1;
+}
+mat-expansion-panel-header .graded-true.win-false .payout{
+
+    opacity: 0.4;
+}
+/* If Won */
+mat-expansion-panel-header .graded-true.win-true .stake{
+
+    opacity: 0.4;
+}
+mat-expansion-panel-header .graded-true.win-true .payout{
+
+    opacity: 1;
+}
+
+mat-expansion-panel-header .divider{
+    background-color: gray;
+    width: 1px;
+    display: inline-block;
+    text-align: center;
+}
