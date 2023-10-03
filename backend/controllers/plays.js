@@ -127,30 +127,38 @@ exports.createPlay = (req,res,next) => {
 exports.getPlays = (req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
+    
+    // Sort by 'graded' in ascending order (false first), then by '_id' in descending order (newest first)
     const playQuery = Play.find()
-    .sort({ _id: -1 }); // Sort by '_id' in descending order (newest first)
+      .sort({ graded: 1, _id: -1 });
+  
     let fetchedPlays;
-    if(pageSize && currentPage){
-        playQuery.skip(pageSize * (currentPage - 1))
+    
+    if (pageSize && currentPage) {
+      playQuery
+        .skip(pageSize * (currentPage - 1))
         .limit(pageSize);
     }
-    playQuery.then(documents => {
-        fetchedPlays = documents;
-        return Play.count();
+    
+    playQuery
+    .then(documents => {
+    fetchedPlays = documents;
+    return Play.count();
     })
     .then(count => {
-        res.status(200).json({
-            message:'Plays Fetched Succesfully!',
-            plays:fetchedPlays,
-            maxPlays: count
-        })
+    res.status(200).json({
+        message: 'Plays Fetched Successfully!',
+        plays: fetchedPlays,
+        maxPlays: count
+    });
     })
     .catch(error => {
-        res.status(500).json({
-            message: "Couldn't Get Plays"
-        })
+    res.status(500).json({
+        message: "Couldn't Get Plays"
+    });
     });
 }
+  
 
 /*exports.getPlay = (req,res,next) => {
     Play.findById(req.params.id).then(play => {
