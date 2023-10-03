@@ -94,6 +94,7 @@ export class UserInfoService {
         this.http.put(BACKENDURL+ 'net' ,infoNet)
         .subscribe(response => {
             console.log(response);
+            this.userinfosUpdated.next({ userinfos: [...this.userinfos], userinfoCount: this.userinfos.length });
         });
     }
     

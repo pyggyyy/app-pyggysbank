@@ -21,7 +21,7 @@
                 <img *ngIf="profilePic" [src]="profilePic" alt="Profile Picture" />
                 <span>{{userName}}</span>
                 <span class="divider">|</span>
-                <span>{{net}}</span>
+                <span>{{ net | number: '1.2-2' }}</span>
               </a>
         </li>
     </ul>

@@ -15,36 +15,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
   profilePic: string; // Add profilePic property
   net: number;
   private authListenerSubs: Subscription;
+  private netUpdateSubs: Subscription;
 
   constructor(private authService: AuthService, private userinfoService: UserInfoService){}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    if(this.userIsAuthenticated){
+    if (this.userIsAuthenticated) {
       this.userId = this.authService.getUserId();
-      console.log(this.userId);
-      this.userinfoService.getUserInfo(this.userId).subscribe((userinfoData) => {
-        this.profilePic = userinfoData.profilePic;
-        this.userName = userinfoData.username;
-        this.net = userinfoData.net;
-          console.log(this.net);
-      });
+      this.getUserInfo();
     }
-   // console.log(this.userIsAuthenticated);
+
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
-      console.log(isAuthenticated);
       this.userIsAuthenticated = isAuthenticated;
-      if(isAuthenticated){
+      if (isAuthenticated) {
         this.userId = this.authService.getUserId();
-        console.log(this.userId);
-        this.userinfoService.getUserInfo(this.userId).subscribe((userinfoData) => {
-          this.profilePic = userinfoData.profilePic;
-          this.userName = userinfoData.username;
-          this.net = userinfoData.net;
-          console.log(this.net);
-        });
+        this.getUserInfo();
       }
-    })
+    });
+
+    // Subscribe to net updates
+    this.netUpdateSubs = this.userinfoService.getUserInfoUpdateListener().subscribe(() => {
+      this.getUserInfo();
+    });
+  }
+
+  getUserInfo() {
+    this.userinfoService.getUserInfo(this.userId).subscribe((userinfoData) => {
+      this.profilePic = userinfoData.profilePic;
+      this.userName = userinfoData.username;
+      this.net = userinfoData.net;
+    });
   }
 
   onLogout() {
@@ -53,6 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+    this.netUpdateSubs.unsubscribe();
   }
 
 }

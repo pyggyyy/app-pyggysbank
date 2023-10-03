@@ -77,31 +77,56 @@ export class PlayService {
         });
     }
 
-    winPlay(id: string, net:number){
-        
-        
-        const playData={
-            ifWin:true,
-            graded:true,
-            id:id
-        }
-        this.http.put(BACKENDURL+ 'win/' + id, playData)
-        .subscribe(response => {
-            this.userinfoService.updateUserNet(net);
+    winPlay(id: string, net: number) {
+        const playData = {
+          ifWin: true,
+          graded: true,
+          id:id
+        };
+    
+        this.http.put(BACKENDURL + 'win/' + id, playData).subscribe((response) => {
+          // Notify that play has been updated
+          const updatedPlayIndex = this.plays.findIndex((play) => play.id === id);
+          if (updatedPlayIndex !== -1) {
+            this.plays[updatedPlayIndex].ifWin = true;
+            this.plays[updatedPlayIndex].graded = true;
+          }
+          this.playsUpdated.next({
+            plays: [...this.plays],
+            playCount: this.plays.length,
+          });
+    
+          // Update user net
+          this.userinfoService.updateUserNet(net);
         });
-    }
-    losePlay(id: string, net: number){
-        const playData={
-            ifWin:false,
-            graded:true,
-            id:id
-        }
-        this.http.put(BACKENDURL+ 'lose/' + id, playData)
-        .subscribe(response => {
-            let newNet = -1 * net;
-            this.userinfoService.updateUserNet(newNet);
+      }
+    
+      losePlay(id: string, net: number) {
+        const playData = {
+          ifWin: false,
+          graded: true,
+          id:id
+        };
+    
+        this.http.put(BACKENDURL + 'lose/' + id, playData).subscribe((response) => {
+          // Notify that play has been updated
+          const updatedPlayIndex = this.plays.findIndex((play) => play.id === id);
+          if (updatedPlayIndex !== -1) {
+            this.plays[updatedPlayIndex].ifWin = false;
+            this.plays[updatedPlayIndex].graded = true;
+          }
+          this.playsUpdated.next({
+            plays: [...this.plays],
+            playCount: this.plays.length,
+          });
+    
+          // Calculate new net value
+          let newNet = -1 * net;
+    
+          // Update user net
+          this.userinfoService.updateUserNet(newNet);
         });
-    }
+      }
 
     /*updatePlay(id: string, title: string, content: string, image: File | string){
         let playData: Play | FormData;
