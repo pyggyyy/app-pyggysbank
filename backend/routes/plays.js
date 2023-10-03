@@ -12,6 +12,8 @@ const router = express.Router();
 router.post('', checkAuth, extractFile ,PlayController.createPlay);
 
 //router.put('/:id', checkAuth, extractFile, PlayController.editPlay);
+router.put('/win/:id', checkAuth, PlayController.updatePlay);
+router.put('/lose/:id', checkAuth, PlayController.updatePlay);
 
 router.get('', PlayController.getPlays);
 

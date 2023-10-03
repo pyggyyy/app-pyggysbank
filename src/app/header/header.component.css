@@ -43,3 +43,7 @@ ul .profile a{
 .mat-toolbar.mat-primary{
     background-color: #FFD700;
 }
+.divider{
+    margin-left: 7px;
+    margin-right: 7px;
+}

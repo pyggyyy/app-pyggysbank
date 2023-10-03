@@ -168,6 +168,35 @@ exports.getPlays = (req, res, next) => {
     })
 }*/
 
+exports.updatePlay = (req,res,next) => {
+    const playId = req.body.id;
+    const update = {
+        graded: req.body.graded,
+        ifWin: req.body.ifWin,
+    };
+
+    Play.updateOne(
+        { _id: playId, creator: req.userData.userId }, // Match the play by ID and user ID
+        update
+    )
+    .then((result) => {
+        if (result.matchedCount > 0) {
+        res.status(200).json({
+            message: 'Update Successful',
+        });
+        } else {
+        res.status(401).json({
+            message: 'Not Authorized to Update',
+        });
+        }
+    })
+    .catch((error) => {
+        res.status(500).json({
+        message: "Couldn't Update Play",
+        });
+    });
+}
+
 
 exports.deletePlay = (req,res,next) => {
     Play.deleteOne({_id:req.params.id, creator: req.userData.userId}).then(result => {

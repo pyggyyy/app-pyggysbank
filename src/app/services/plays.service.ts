@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 
+import { UserInfoService } from './userinfo.service';
+
 const BACKENDURL = environment.apiUrl + 'plays/';
 
 @Injectable({providedIn: 'root'})
@@ -15,7 +17,7 @@ export class PlayService {
     private plays: Play[] = [];
     private playsUpdated = new Subject<{plays: Play[], playCount: number}>();
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(private http: HttpClient, private router: Router, public userinfoService: UserInfoService) {
 
     }
 
@@ -72,6 +74,32 @@ export class PlayService {
                     window.location.reload();
                   }, 1500);
               });
+        });
+    }
+
+    winPlay(id: string, net:number){
+        
+        
+        const playData={
+            ifWin:true,
+            graded:true,
+            id:id
+        }
+        this.http.put(BACKENDURL+ 'win/' + id, playData)
+        .subscribe(response => {
+            this.userinfoService.updateUserNet(net);
+        });
+    }
+    losePlay(id: string, net: number){
+        const playData={
+            ifWin:false,
+            graded:true,
+            id:id
+        }
+        this.http.put(BACKENDURL+ 'lose/' + id, playData)
+        .subscribe(response => {
+            let newNet = -1 * net;
+            this.userinfoService.updateUserNet(newNet);
         });
     }
 

@@ -126,6 +126,53 @@ exports.editUserInfo = (req,res,next) => {
     })
 }
 
+exports.netUserInfo = (req, res, next) => {
+    const netValueToAdd = req.body.net; // Value to add to the existing net value
+    console.log(netValueToAdd);
+    console.log('reading');
+
+    // Find the user's UserInfo by creator (assuming it's unique to the user)
+    UserInfo.findOne({ creator: req.userData.userId })
+    .then((userInfo) => {
+        if (!userInfo) {
+            return res.status(401).json({
+                message: 'Not Authorized to Update',
+            });
+        }
+        console.log(userInfo);
+
+        // Retrieve the current net value from the user's UserInfo
+        const currentNet = userInfo.net || 0; // Default to 0 if net is not set
+
+        // Calculate the new net value by adding the provided netValueToAdd
+        const newNet = currentNet + netValueToAdd;
+
+        // Update the UserInfo with the new net value
+        userInfo.net = newNet;
+
+        console.log(userInfo);
+
+        // Save the updated UserInfo
+        return userInfo.save()
+            .then(() => {
+                res.status(200).json({
+                    message: 'Update Successful',
+                });
+            })
+            .catch((error) => {
+                res.status(500).json({
+                    message: "Couldn't Update User Info",
+                });
+            });
+    })
+    .catch((error) => {
+        res.status(500).json({
+            message: "Couldn't Update User Info",
+        });
+    });
+};
+
+
 
 exports.getUserInfo = (req, res, next) => {
   UserInfo.findOne({ creator: req.params.id })

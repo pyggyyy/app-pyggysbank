@@ -85,6 +85,16 @@ export class UserInfoService {
         });
     });
     }
-
+    updateUserNet(net:number){
+        
+        const infoNet = {
+            net: net
+        }
+        console.log()
+        this.http.put(BACKENDURL+ 'net' ,infoNet)
+        .subscribe(response => {
+            console.log(response);
+        });
+    }
+    
 }
-

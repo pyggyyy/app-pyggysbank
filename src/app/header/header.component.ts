@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userId: string; // Add userId property
   userName: string;
   profilePic: string; // Add profilePic property
+  net: number;
   private authListenerSubs: Subscription;
 
   constructor(private authService: AuthService, private userinfoService: UserInfoService){}
@@ -25,6 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.userinfoService.getUserInfo(this.userId).subscribe((userinfoData) => {
         this.profilePic = userinfoData.profilePic;
         this.userName = userinfoData.username;
+        this.net = userinfoData.net;
+          console.log(this.net);
       });
     }
    // console.log(this.userIsAuthenticated);
@@ -37,6 +40,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userinfoService.getUserInfo(this.userId).subscribe((userinfoData) => {
           this.profilePic = userinfoData.profilePic;
           this.userName = userinfoData.username;
+          this.net = userinfoData.net;
+          console.log(this.net);
         });
       }
     })

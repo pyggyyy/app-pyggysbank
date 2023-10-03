@@ -55,19 +55,17 @@ export class PlayListComponent implements OnInit, OnDestroy {
     this.playsService.getPlays(this.playsPerPage,this.currentPage);
   }
 
-  onDelete(playId: string) {
+  onWin(playId: string, netAdd: number) {
     this.isLoading = true;
-    this.playsService.deletePlay(playId).subscribe(() => {
-      if (this.plays.length === 1 && this.totalPlays > 1) {
-        this.currentPage--;
-      }
-      this.playsService.getPlays(this.playsPerPage, this.currentPage);
-      
-      // Manually update the paginator's length property
-      this.paginator.length = this.totalPlays;
-    },() => {
-      this.isLoading = false;
-    });
+    console.log(netAdd);
+    this.playsService.winPlay(playId, netAdd);
+    this.isLoading = false;
+  }
+  onLose(playId: string, netLoss: number) {
+    this.isLoading = true;
+    console.log(netLoss);
+    this.playsService.losePlay(playId, netLoss);
+    this.isLoading = false;
   }
 
   ngOnDestroy() {
