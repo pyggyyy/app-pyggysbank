@@ -23,27 +23,48 @@ export class PlayService {
 
     getPlays(playsPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${playsPerPage}&page=${currentPage}`;
-        this.http.get<{message: string,plays:any,maxPlays: number}>(BACKENDURL + queryParams)
-        .pipe(map((playData) => {
-            return {plays: playData.plays.map(play => {
-                return{
-                    title: play.title,
-                    content: play.content,
-                    id: play._id,
-                    imagePath: play.imagePath,
-                    creator:play.creator,
-                    stake: play.stake,
-                    payout: play.payout,
-                    ifWin:play.ifWin,
-                    graded: play.graded
-                }
-            }), maxPlays: playData.maxPlays}
-        }))
+        this.http
+        .get<{ message: string; plays: any; maxPlays: number }>(BACKENDURL + queryParams)
+        .pipe(
+        map((playData) => {
+            return {
+            plays: playData.plays.map((play) => {
+                return {
+                title: play.title,
+                content: play.content,
+                id: play._id,
+                imagePath: play.imagePath,
+                creator: play.creator,
+                stake: play.stake,
+                payout: play.payout,
+                ifWin: play.ifWin,
+                graded: play.graded,
+                };
+            }),
+            maxPlays: playData.maxPlays,
+            };
+        })
+        )
         .subscribe((transformedPlaysData) => {
-            this.plays = transformedPlaysData.plays;
-            this.playsUpdated.next({plays: [...this.plays],playCount:transformedPlaysData.maxPlays});
+        // Sort plays by 'graded' property (false first, true later)
+        transformedPlaysData.plays.sort((a, b) => {
+            if (a.graded && !b.graded) {
+            return 1;
+            }
+            if (!a.graded && b.graded) {
+            return -1;
+            }
+            return 0;
+        });
+    
+        this.plays = transformedPlaysData.plays;
+        this.playsUpdated.next({
+            plays: [...this.plays],
+            playCount: transformedPlaysData.maxPlays,
+        });
         });
     }
+      
 
     getPlayUpdateListener() {
         return this.playsUpdated.asObservable()
