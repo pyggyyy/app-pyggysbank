@@ -85,6 +85,9 @@ mat-action-row .left-container span{
     margin-left: 5px;
     display: inline-block;
 }
+.align-right{
+    justify-content: flex-end;
+}
 
 @media screen and (max-width:1024px){
     mat-expansion-panel-header .numbers .divider{
@@ -97,5 +100,8 @@ mat-action-row .left-container span{
     mat-expansion-panel-header .header-container{
         padding-right: 10px;
         gap: 10px;
+    }
+    mat-action-row{
+        flex-direction: column;
     }
 }
