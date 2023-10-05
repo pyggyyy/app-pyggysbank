@@ -4,8 +4,11 @@
     </span>
     <span class="spacer"></span>
     <ul>
-        <li *ngIf="userIsAuthenticated">
+        <li class="hidden-mobile" *ngIf="userIsAuthenticated">
             <a mat-button routerLink="/create" routerLinkActive="active">New Play</a>
+        </li>
+        <li class="hidden-desktop plusBtn" *ngIf="userIsAuthenticated">
+            <a routerLink="/create" routerLinkActive="active">+</a>
         </li>
         <li *ngIf="!userIsAuthenticated">
             <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
@@ -19,8 +22,8 @@
         <li *ngIf="userIsAuthenticated" class="profile">
             <a routerLink="/userinfo/{{ userId }}">
                 <img *ngIf="profilePic" [src]="profilePic" alt="Profile Picture" />
-                <span>{{userName}}</span>
-                <span class="divider">|</span>
+                <span class="hidden-mobile">{{userName}}</span>
+                <span class="divider hidden-mobile">|</span>
                 <span>{{ net | number: '1.2-2' }}</span>
               </a>
         </li>

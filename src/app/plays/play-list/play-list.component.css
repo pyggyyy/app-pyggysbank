@@ -62,3 +62,17 @@ mat-expansion-panel-header .divider{
     display: inline-block;
     text-align: center;
 }
+
+@media screen and (max-width:1024px){
+    mat-expansion-panel-header .numbers .divider{
+        display: none;
+    }
+    mat-expansion-panel-header  .numbers{
+        display: flex;
+        flex-direction: column;
+    }
+    mat-expansion-panel-header .header-container{
+        padding-right: 10px;
+        gap: 10px;
+    }
+}

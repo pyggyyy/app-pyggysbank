@@ -47,3 +47,30 @@ ul .profile a{
     margin-left: 7px;
     margin-right: 7px;
 }
+.hidden-desktop{
+    display: none;
+}
+@media screen and (max-width:1024px) {
+    ul{
+        font-size: 14px;
+    }
+    ul li{
+        margin-right: 5px;
+    }
+    .hidden-mobile{
+        display: none;
+    }
+    .hidden-desktop{
+        display: block;
+    }
+    .plusBtn a{
+        padding: 5px;
+        border-radius: 100%;
+        font-size: 34px;
+        display: flex;
+        width: 25px;
+        height: 25px;
+        justify-content: center;
+        align-items: center;
+    }
+}
