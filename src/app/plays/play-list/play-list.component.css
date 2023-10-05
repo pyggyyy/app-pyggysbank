@@ -62,6 +62,29 @@ mat-expansion-panel-header .divider{
     display: inline-block;
     text-align: center;
 }
+mat-action-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+mat-action-row .left-container{
+    display: flex;
+    align-items: center;
+}
+mat-action-row img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    margin-right: 5px;
+}
+mat-action-row .left-container a{
+    margin-right: 5px;
+    color: #001F3F;
+}
+mat-action-row .left-container span{
+    margin-left: 5px;
+    display: inline-block;
+}
 
 @media screen and (max-width:1024px){
     mat-expansion-panel-header .numbers .divider{

@@ -7,6 +7,7 @@ import { Play } from './../play.model';
 import { PlayService } from '../../services/plays.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { AuthService } from '../../auth/auth.service';
+import { UserInfoService } from 'src/app/services/userinfo.service';
 
 @Component({
   selector: 'app-play-list',
@@ -23,12 +24,16 @@ export class PlayListComponent implements OnInit, OnDestroy {
   playSizeOptions = [2,5,10];
   userIsAuthenticated = false;
   userId: string;
+  panelSpinnerLoading: boolean = false;
+  panelUser : string;
+  panelNet: number;
+  panelPic: string;
   private playsSub: Subscription;
   private authStatusSub: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public playsService: PlayService, private authService: AuthService){};
+  constructor(public playsService: PlayService, private authService: AuthService, private userinfoService: UserInfoService){};
 
   ngOnInit() {
     this.isLoading = true;
@@ -46,6 +51,20 @@ export class PlayListComponent implements OnInit, OnDestroy {
       this.userIsAuthenticated = isAuthenticated;
       this.userId = this.authService.getUserId();
     });
+  }
+
+  onPanelOpened(play: any) {
+    // Add your code here to perform the desired action when a panel is opened
+    
+    this.panelSpinnerLoading = true;
+    this.userinfoService.getUserInfo(play.creator).subscribe((userinfoData) => {
+      this.isLoading = false;
+      console.log(userinfoData);
+      this.panelUser = userinfoData.username;
+      this.panelNet = userinfoData.net;
+      this.panelPic = userinfoData.profilePic;
+    });
+    // You can call any method or perform any action here
   }
 
   onChangedPage(pageData: PageEvent){
