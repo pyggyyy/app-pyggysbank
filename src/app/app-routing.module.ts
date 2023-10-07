@@ -14,7 +14,7 @@ const routes: Routes = [
     //{path:'edit/:playId',component:PlayCreateComponent, canActivate:[AuthGuard]},
     {path:'login',component:LoginComponent},
     {path:'signup',component:SignupComponent},
-    {path:'user/:userinfoId', component: UserInfoListComponent, canActivate:[AuthGuard]},
+    {path:'user/:userinfoId', component: UserInfoListComponent},
     {path:'userinfo', component: UserInfoCreateComponent, canActivate:[AuthGuard]}, // Add this lin
     {path:'userinfo/:userinfoId', component: UserInfoCreateComponent, canActivate:[AuthGuard]} // Add this lin
 ]

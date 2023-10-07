@@ -15,7 +15,7 @@
             <img [src]="play.imagePath" [alt]="play.title">
         </div>
         <p *ngIf="play.content" style="white-space: pre-line;">{{ play.content }}</p>
-        <mat-action-row *ngIf="userIsAuthenticated && userId==play.creator && !play.graded" class="align-rightt">
+        <mat-action-row *ngIf="userIsAuthenticated && userId==play.creator && !play.graded && !userIdProfile" class="align-rightt">
             <div class="left-container">
                 <img src="{{panelPic}}">
                 <a routerLink="/user/{{play.creator}}" color="primary">{{panelUser}}</a> | <span>{{panelNet | number: '1.2-2'}}</span>
@@ -26,7 +26,14 @@
             </div>
             
         </mat-action-row>
-        <mat-action-row *ngIf="userIsAuthenticated && userId!==play.creator && !play.graded">
+        <mat-action-row *ngIf="userIsAuthenticated && userId!==play.creator && !play.graded && !userIdProfile">
+            <div class="left-container">
+                <img src="{{panelPic}}">
+                <a routerLink="/user/{{play.creator}}" color="primary">{{panelUser}}</a> | <span>{{panelNet | number: '1.2-2'}}</span>
+            </div>
+            
+        </mat-action-row>
+        <mat-action-row *ngIf="!userIsAuthenticated && !userIdProfile">
             <div class="left-container">
                 <img src="{{panelPic}}">
                 <a routerLink="/user/{{play.creator}}" color="primary">{{panelUser}}</a> | <span>{{panelNet | number: '1.2-2'}}</span>
