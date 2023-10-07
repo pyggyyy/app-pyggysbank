@@ -127,11 +127,23 @@ exports.createPlay = (req,res,next) => {
 exports.getPlays = (req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
-    
+    const userIdString = req.query.userIdString;
+
+    console.log(userIdString);
+
     // Sort by 'graded' in ascending order (false first), then by '_id' in descending order (newest first)
-    const playQuery = Play.find()
-      .sort({ graded: 1, _id: -1 });
-  
+    let playQuery;
+    let userQuery = false;
+    if (userIdString === null || userIdString == '') {
+        console.log('ayyy');
+        playQuery = Play.find().sort({ graded: 1, _id: -1 });
+    } else {
+        console.log('ohhh');
+        userQuery = true;
+        playQuery = Play.find({ creator: userIdString }).sort({ graded: 1, _id: -1 });
+    }
+   
+    
     let fetchedPlays;
     
     if (pageSize && currentPage) {
@@ -143,7 +155,12 @@ exports.getPlays = (req, res, next) => {
     playQuery
     .then(documents => {
     fetchedPlays = documents;
-    return Play.count();
+    if(userQuery){
+        return Play.countDocuments({ creator: userIdString });
+    }
+    else{
+        return Play.count();
+    }
     })
     .then(count => {
     res.status(200).json({

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component,  Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import { Play } from './../play.model';
@@ -15,6 +15,7 @@ import { UserInfoService } from 'src/app/services/userinfo.service';
   styleUrls: ['./play-list.component.css']
 })
 export class PlayListComponent implements OnInit, OnDestroy {
+  @Input() userIdProfile: string = '';
   //Declare Variable
   plays: Play[] = [];
   isLoading = false;
@@ -31,13 +32,16 @@ export class PlayListComponent implements OnInit, OnDestroy {
   private playsSub: Subscription;
   private authStatusSub: Subscription;
 
+  
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public playsService: PlayService, private authService: AuthService, private userinfoService: UserInfoService){};
 
   ngOnInit() {
+    console.log(this.userIdProfile);
     this.isLoading = true;
-    this.playsService.getPlays(this.playsPerPage, this.currentPage);
+    this.playsService.getPlays(this.playsPerPage, this.currentPage, this.userIdProfile);
     this.userId = this.authService.getUserId();
     this.playsSub = this.playsService.getPlayUpdateListener()
     .subscribe((playsData: { plays: Play[], playCount: number }) => {
@@ -71,7 +75,7 @@ export class PlayListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.currentPage=pageData.pageIndex + 1;
     this.playsPerPage = pageData.pageSize;
-    this.playsService.getPlays(this.playsPerPage,this.currentPage);
+    this.playsService.getPlays(this.playsPerPage,this.currentPage,this.userIdProfile);
   }
 
   onWin(playId: string, netAdd: number) {

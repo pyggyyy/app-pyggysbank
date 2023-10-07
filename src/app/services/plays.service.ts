@@ -21,8 +21,10 @@ export class PlayService {
 
     }
 
-    getPlays(playsPerPage: number, currentPage: number) {
-        const queryParams = `?pagesize=${playsPerPage}&page=${currentPage}`;
+    getPlays(playsPerPage: number, currentPage: number, userIdString: string) {
+        console.log('hihi');
+        console.log(userIdString);
+        const queryParams = `?pagesize=${playsPerPage}&page=${currentPage}&userIdString=${userIdString}`;
         this.http.get<{message: string,plays:any,maxPlays: number}>(BACKENDURL + queryParams)
         .pipe(map((playData) => {
             return {plays: playData.plays.map(play => {

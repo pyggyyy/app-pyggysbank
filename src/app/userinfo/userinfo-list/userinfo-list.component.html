@@ -5,9 +5,10 @@
             <h3>{{name}}</h3>
         </div>
         <div class="financials">
-            {{net}}
+            {{net | number: '1.2-2'}}
         </div>
     </div>
     <div class="plays">
+        <app-play-list [userIdProfile]="userId"></app-play-list>
     </div>
 </mat-card>
