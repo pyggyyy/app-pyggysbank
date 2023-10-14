@@ -1,12 +1,12 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-accordion multi="false" *ngIf="plays.length > 0 && !isLoading">
     <mat-expansion-panel *ngFor="let play of plays" (opened)="onPanelOpened(play)">
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header class="graded-{{play.graded}}">
             <div class="header-container">
                 {{ play.title }}
-                <div class="numbers graded-{{play.graded}} win-{{play.ifWin}}">
+                <div class="numbers win-{{play.ifWin}}">
                     <mark class="stake">-{{play.stake}}</mark>
-                    <span class="divider">|</span>
+                    
                     <mark class="payout">+{{play.payout}}</mark>
                 </div>
             </div>

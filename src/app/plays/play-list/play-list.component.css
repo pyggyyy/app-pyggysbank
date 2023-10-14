@@ -38,22 +38,27 @@ mat-expansion-panel-header .payout{
 }
 
 /* If Lost */
-mat-expansion-panel-header .graded-true.win-false .stake{
+mat-expansion-panel-header.graded-true
+.win-false .stake{
 
     opacity: 1;
 }
-mat-expansion-panel-header .graded-true.win-false .payout{
+mat-expansion-panel-header.graded-true .win-false .payout{
 
     opacity: 0.4;
 }
 /* If Won */
-mat-expansion-panel-header .graded-true.win-true .stake{
+mat-expansion-panel-header.graded-true .win-true .stake{
 
     opacity: 0.4;
 }
-mat-expansion-panel-header .graded-true.win-true .payout{
+mat-expansion-panel-header.graded-true .win-true .payout{
 
     opacity: 1;
+}
+mat-expansion-panel-header.graded-false{
+    background-color: rgba(255, 215, 0, 0.8)
+    ;
 }
 
 mat-expansion-panel-header .divider{
