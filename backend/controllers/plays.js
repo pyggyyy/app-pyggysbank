@@ -135,7 +135,6 @@ exports.getPlays = (req, res, next) => {
     let playQuery;
     let userQuery = false;
     if (userIdString === null || userIdString == '') {
-        console.log('ayyy');
         playQuery = Play.find().sort({ graded: 1, _id: -1 });
     } else {
         console.log('ohhh');
@@ -221,6 +220,31 @@ exports.updatePlay = (req,res,next) => {
         });
     });
 }
+
+// Replace tags for a play
+exports.replaceTagsForPlay = (req, res, next) => {
+    const playId = req.params.playId; // Assuming you're passing playId as a parameter in the URL
+    const newTags = req.body.tags; // Assuming you're passing an array of new tags as a string
+
+    // Convert the string of new tags to an array
+    const tagsArray = newTags.split(',');
+
+    // Find the play by its ID and update the tags
+    Play.findByIdAndUpdate(
+        playId,
+        { tags: tagsArray },
+        { new: true }
+    )
+    .then(updatedPlay => {
+        res.status(200).json({
+            message: 'Tags Replaced for Play Successfully',
+            play: updatedPlay,
+        });
+    })
+    .catch(error => {
+        res.status(500).json({ message: "Couldn't Replace Tags for Play" });
+    });
+};
 
 
 exports.deletePlay = (req,res,next) => {

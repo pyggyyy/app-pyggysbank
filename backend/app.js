@@ -7,6 +7,7 @@ const todoRoutes = require('./routes/todos');
 const userRoutes = require('./routes/user');
 const userInfoRoutes = require('./routes/userinfo');
 const playRoutes = require('./routes/plays');
+const tagRoutes = require('./routes/tags');
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.use('/api/todos',todoRoutes);
 app.use('/api/user',userRoutes);
 app.use('/api/userinfo',userInfoRoutes);
 app.use('/api/plays',playRoutes);
+app.use('/api/tags',tagRoutes);
 
 module.exports = app;

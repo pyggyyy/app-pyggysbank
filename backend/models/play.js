@@ -8,7 +8,8 @@ const playSchema = mongoose.Schema({
     stake: { type: Number, required: true },
     payout: { type: Number, required: true },
     graded: { type: Boolean, required: true },
-    ifWin: { type: Boolean, required: true }
+    ifWin: { type: Boolean, required: true },
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag", required: false }] // Array of tag references
 });
 
 module.exports = mongoose.model('Play', playSchema);

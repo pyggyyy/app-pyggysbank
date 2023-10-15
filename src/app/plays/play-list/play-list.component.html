@@ -15,6 +15,21 @@
             <img [src]="play.imagePath" [alt]="play.title">
         </div>
         <p *ngIf="play.content" style="white-space: pre-line;">{{ play.content }}</p>
+        <div class="tags_section">
+            <button class="addTag" mat-button color="primary"  (click)="addTagInitiate()">+ Tag</button>
+            <div class="tag">tag <span class="deleteTag">X</span></div><div class="tag">tag <button color="warm">X</button></div>
+            <div *ngIf="tagIni" mat-dialog-content>
+                <form [formGroup]="form" (submit)="createTag()">
+                    <mat-form-field>
+                        <input placeholder="New Tag" matInput type="text" formControlName="title" required>
+                        <mat-error *ngIf="form.get('title').invalid">Please Enter Tag</mat-error>
+                    </mat-form-field>
+                    <button mat-raised-button color="accent" type="submit">Add Tag</button>
+                </form>
+                <div *ngFor="let tag of play.tags" class="tag">{{tag}} <button color="warm">X</button></div>
+            </div>
+            <div *ngFor="let tag of tags" class="tag">{{tag.title}}</div>
+        </div>
         <mat-action-row *ngIf="userIsAuthenticated && userId==play.creator && !play.graded && !userIdProfile" class="align-rightt">
             <div class="left-container">
                 <img src="{{panelPic}}">

@@ -93,6 +93,15 @@ mat-action-row .left-container span{
 .align-right{
     justify-content: flex-end;
 }
+.tags_section{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.tags_section .deleteTag{
+    color: red;
+    cursor: pointer;
+}
 
 @media screen and (max-width:1024px){
     mat-expansion-panel-header .numbers .divider{
